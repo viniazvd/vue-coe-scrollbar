@@ -1,7 +1,14 @@
 <template>
   <div v-if="visible" class='vue-coe-scroll' ref="wrapper">
-    <div class="full-scrollbar" ref="fullscrollbar" @click="onClick" />
-    <div class="scrollbar" ref="scrollbar" />
+    <div
+      class="full-scrollbar"
+      ref="fullscrollbar"
+      @click="onClick"
+      @mouseover="showScroll = true"
+      @mouseout="showScroll = false"
+    />
+
+    <div v-show="true" class="scrollbar" ref="scrollbar" />
 
     <div class="content" ref="content">
       <slot />
@@ -26,7 +33,7 @@ function bindEvent (el, event, callback, ...options) {
 }
 
 export default {
-  name: 'example',
+  name: 'vue-coe-scrollbar',
 
   props: {
     visible: {
@@ -41,7 +48,8 @@ export default {
       events: {},
       mutation: null,
       resizable: null,
-      dragging: false
+      dragging: false,
+      showScroll: false
     }
   },
 
@@ -79,6 +87,10 @@ export default {
   },
 
   methods: {
+    onWheelBoladao (e) {
+      this.$el.scrollTop += e.deltaY
+    },
+
     dragStart ({ clientY: currentY, touches }) {
       this.dragging = true
       this.$refs.wrapper.style.pointerEvents = 'none'
@@ -118,75 +130,53 @@ export default {
       this.$refs.fullscrollbar.style.height = scrollHeight + 'px'
 
       // calc to config the scrollbar on the right of the screen
-      el.style.width = `calc(${ width.toString() + 'px' } + 195px)`
+      el.style.width = `calc(${ width.toString() + 'px' })`
 
       const maxScrollTop = scrollHeight - height
       const scrollbarHeight = Math.pow(height, 2) / scrollHeight
       const maxTopOffset = height - scrollbarHeight
 
       this.$refs.scrollbar.scaling = maxTopOffset / maxScrollTop
+
       this.$refs.scrollbar.style.height = `${scrollbarHeight}px`
 
-      // TODO-improve: change to var css
-      if (el.isIOS) {
-        // calc to remove ios header space
-        this.$refs.scrollbar.nextElementSibling.style.marginTop = `-${scrollbarHeight}px`
-
-        const x = 1 / (1 + this.$refs.scrollbar.scaling)
-
-        this.$refs.scrollbar.style.transform = `
-          translateZ(${x}px)
-          scale(${1 - x})
-          translateX(-200px)
-        `
-      } else {
-        this.$refs.scrollbar.style.transform = `
-          scale(${1 / this.$refs.scrollbar.scaling})
-          matrix3d(
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, -1
-          )
-          translateX(-200px)
-          translateZ(${-2 + 1 - 1 / this.$refs.scrollbar.scaling}px)
-        `
+      if (!this.showScroll) {
+        setTimeout(() => {
+          this.$refs.scrollbar.style.height = `${scrollbarHeight}px`
+        }, 3000)
       }
+
+      this.$refs.scrollbar.style.transform = `
+        scale(${1 / this.$refs.scrollbar.scaling})
+        matrix3d(
+          1, 0, 0, 0,
+          0, 1, 0, 0,
+          0, 0, 1, 0,
+          0, 0, 0, -1
+        )
+        translateZ(${-2 + 1 - 1 / this.$refs.scrollbar.scaling}px)
+      `
     },
 
-    onClick (e) {
-      console.log(e)
-      // const currentY = event.offsetY !== undefined
-      //   ? event.offsetY
-      //   : event.touches[0].offsetY
+    onClick (event) {
+      const scrollbar = this.$refs.wrapper.scrollTop
 
-      // // const bigger =
-      // this.$refs.wrapper.scrollTop = (currentY - this.lastY)
-      // this.lastY = currentY
-    },
+      if (!scrollbar) {
+        this.$refs.wrapper.scrollTop = 700
+        this.lastY = event.clientY
+        return
+      }
 
-    fixSafari (el) {
-      const { wrapper, scrollbar } = this.$refs
+      this.$refs.wrapper.scrollTop = this.lastY <= event.clientY
+        ? this.$refs.wrapper.scrollTop + 700
+        : this.$refs.wrapper.scrollTop - 700
 
-      el.isIOS = true
-
-      scrollbar.style.right = ''
-      scrollbar.style.left = '100%'
-      scrollbar.style.position = '-webkit-sticky'
-
-      wrapper.style.width = ''
-      wrapper.style.height = ''
-      wrapper.style.position = ''
-      wrapper.style.perspective = '1px'
-
-      Array
-        .from(el.children)
-        .filter(e => e !== wrapper)
-        .forEach(e => wrapper.appendChild(e))
+      this.lastY = event.clientY
     },
 
     setEvents () {
       this.$eventsBinded = [
+        bindEvent(this.$el, 'wheel', this.onWheelBoladao),
         bindEvent(window, this.events['move'], this.dragMove),
         bindEvent(window, this.events['end'], this.dragEnd, { passive: true }),
         bindEvent(this.$refs.scrollbar, this.events['start'], this.dragStart, { passive: true })
@@ -216,7 +206,7 @@ export default {
             el,
             width: document.body.clientWidth,
             height: document.body.clientHeight,
-            scrollHeight: el.scrollHeight
+            scrollHeight: mutations[0].target.scrollHeight
           })
         })
       })
@@ -237,6 +227,8 @@ export default {
 </script>
 
 <style>
+* { box-sizing: border-box; }
+
 html, body {
   margin: 0;
   border: 0;
@@ -248,19 +240,19 @@ html, body {
 .vue-coe-scroll {
   height: 100%;
   perspective: 1px;
-  overflow-x: hidden;
+  overflow: hidden;
   transform-style: preserve-3d;
   perspective-origin: right top;
 }
 
 .full-scrollbar {
+  right: 0;
   width: 18px;
-  right: 176px;
   position: fixed;
 }
 
 .full-scrollbar:hover {
-  width: 18px;
+  width: 16px;
   opacity: 0.3;
   background: blue;
 }
