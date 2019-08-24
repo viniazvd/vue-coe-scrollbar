@@ -18,4 +18,9 @@
 - draggMOVE: mostra
 - draggOFF: sai após x tempo
 
+## click
+- mostra
+- desliza x posições
+- sai após x tempo
+
  
