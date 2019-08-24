@@ -1,21 +1,25 @@
 <template>
-  <div v-if="visible" class='vue-coe-scroll' ref="wrapper">
+  <div ref="wrapper" class="vue-coe-scroll">
     <div
       class="full-scrollbar"
       ref="fullscrollbar"
       @click="onClick"
-      @mouseover="showScroll = true"
-      @mouseout="showScroll = false"
+      @mouseover="show"
+      @mouseout="hide"
     />
 
-    <div v-show="true" class="scrollbar" ref="scrollbar" />
+    <div
+      ref="scrollbar"
+      :style="{ opacity: +showScroll }"
+      :class="['scrollbar', { '-show-scroll': showScroll }]"
+      @mouseover="show"
+      @mouseout="hide"
+    />
 
     <div class="content" ref="content">
       <slot />
     </div>
   </div>
-
-  <div v-else class="vue-coe-scroll" ref="wrapper-default"><slot /></div>
 </template>
 
 <script>
@@ -36,20 +40,31 @@ export default {
   name: 'vue-coe-scrollbar',
 
   props: {
-    visible: {
+    active: {
       type: Boolean,
       default: true
+    },
+
+    jump: {
+      type: Number,
+      default: 700
+    },
+
+    disappear: {
+      type: Number,
+      default: 1500
     }
   },
 
   data () {
     return {
-      lastY: 0,
+      timer: 0,
       events: {},
       mutation: null,
       resizable: null,
       dragging: false,
-      showScroll: false
+      lastPosition: 0,
+      showScroll: true,
     }
   },
 
@@ -61,14 +76,7 @@ export default {
   },
 
   mounted () {
-    if (!this.visible) {
-      this.$refs['wrapper-default'].style['overflow'] = 'auto'
-      this.$refs['wrapper-default'].style['height'] = '100%'
-
-      return
-    }
-
-    // must to be reactive
+    // TODO: must to be reactive?
     this.events = {
       'start': isMobile() ? 'touchstart' : 'mousedown',
       'move': isMobile() ? 'touchmove' : 'mousemove',
@@ -77,26 +85,30 @@ export default {
 
     const { wrapper: el, content } = this.$refs
 
-    this.setEvents(el)
+    this.bindEvents()
     this.setResizableObserver(el)
     this.setMutationObserver(el, content)
 
     this.$refs.fullscrollbar.style.height = el.scrollHeight + 'px'
-
-    if (getComputedStyle(el).webkitOverflowScrolling) this.fixSafari()
   },
 
   methods: {
-    onWheelBoladao (e) {
+    onScroll (e) {
+      if (!this.active) return
+
+      this.show()
       this.$el.scrollTop += e.deltaY
+      this.hide()
     },
 
     dragStart ({ clientY: currentY, touches }) {
       this.dragging = true
+      this.show()
+
       this.$refs.wrapper.style.pointerEvents = 'none'
       this.$refs.wrapper.style.pointerEvents = 'none'
 
-      this.lastY = currentY !== undefined ? currentY : touches[0].clientY
+      this.lastPosition = currentY !== undefined ? currentY : touches[0].clientY
     },
 
     dragMove (event) {
@@ -106,28 +118,48 @@ export default {
         ? event.clientY
         : event.touches[0].clientY
 
-      this.$refs.wrapper.scrollTop += (currentY - this.lastY) / this.$refs.scrollbar.scaling
-      this.lastY = currentY
+      this.$refs.wrapper.scrollTop += (currentY - this.lastPosition) / this.$refs.scrollbar.scaling
+      this.lastPosition = currentY
 
       if (!isMobile()) event.preventDefault()
     },
 
     dragEnd (event) {
       this.dragging = false
+      this.hide()
+
       this.$refs.wrapper.style.pointerEvents = 'auto'
       this.$refs.wrapper.style.pointerEvents = 'auto'
     },
 
     setPosition ({ el, width, height, scrollHeight }) {
+      console.log({
+        wrapper: this.$refs.wrapper.scrollHeight,
+        scroll: this.$refs.scrollbar.scrollHeight,
+        scrollHeight,
+        height
+      })
+
+      const { scrollbar, wrapper, fullscrollbar } = this.$refs
+
+      // WIP - sometimes it doesn't work :sad_pepe:
       // remove scrollbar
-      if (height === scrollHeight) { // sometimes it doesn't work :sad_pepe:
-        this.$refs.scrollbar.style.display = 'none'
+      if (this.$refs.wrapper.scrollHeight <= this.$refs.scrollbar.scrollHeight) {
+        scrollbar.style.display = 'none'
         return
       }
 
-      this.$refs.scrollbar.style.display = 'block'
+      this.show()
 
-      this.$refs.fullscrollbar.style.height = scrollHeight + 'px'
+      // // WIP - sometimes it doesn't work :sad_pepe:
+      // // remove scrollbar
+      // if (height === scrollHeight) {
+      //   scrollbar.style.display = 'none'
+      //   return
+      // }
+
+      scrollbar.style.display = 'block'
+      fullscrollbar.style.height = scrollHeight + 'px'
 
       // calc to config the scrollbar on the right of the screen
       el.style.width = `calc(${ width.toString() + 'px' })`
@@ -136,51 +168,63 @@ export default {
       const scrollbarHeight = Math.pow(height, 2) / scrollHeight
       const maxTopOffset = height - scrollbarHeight
 
-      this.$refs.scrollbar.scaling = maxTopOffset / maxScrollTop
-
-      this.$refs.scrollbar.style.height = `${scrollbarHeight}px`
-
-      if (!this.showScroll) {
-        setTimeout(() => {
-          this.$refs.scrollbar.style.height = `${scrollbarHeight}px`
-        }, 3000)
-      }
-
-      this.$refs.scrollbar.style.transform = `
-        scale(${1 / this.$refs.scrollbar.scaling})
+      scrollbar.scaling = maxTopOffset / maxScrollTop
+      scrollbar.style.height = `${scrollbarHeight}px`
+      scrollbar.style.transform = `
+        scale(${1 / scrollbar.scaling})
         matrix3d(
           1, 0, 0, 0,
           0, 1, 0, 0,
           0, 0, 1, 0,
           0, 0, 0, -1
         )
-        translateZ(${-2 + 1 - 1 / this.$refs.scrollbar.scaling}px)
+        translateZ(${-2 + 1 - 1 / scrollbar.scaling}px)
       `
+
+      this.hide()
     },
 
-    onClick (event) {
-      const scrollbar = this.$refs.wrapper.scrollTop
+    onClick ({ clientY }) {
+      const { scrollbar, wrapper } = this.$refs
+      const { top, height } = scrollbar.getBoundingClientRect()
 
-      if (!scrollbar) {
-        this.$refs.wrapper.scrollTop = 700
-        this.lastY = event.clientY
-        return
-      }
+      const lastY = Math.round(top - (height / 2))
+      const currentY = clientY - (height / 2)
 
-      this.$refs.wrapper.scrollTop = this.lastY <= event.clientY
-        ? this.$refs.wrapper.scrollTop + 700
-        : this.$refs.wrapper.scrollTop - 700
+      const increment = lastY < currentY ? this.jump : - this.jump
+      const position = wrapper.scrollTop + increment
 
-      this.lastY = event.clientY
+      wrapper.scrollTo({ top: position, behavior: 'smooth' })
     },
 
-    setEvents () {
+    show () {
+      this.showScroll = true
+
+      clearTimeout(this.timer)
+    },
+
+    hide () {
+      clearTimeout(this.timer)
+
+      if (this.dragging) return
+
+      this.timer = setTimeout(() => this.showScroll = false, this.disappear)
+    },
+
+    bindEvents () {
       this.$eventsBinded = [
-        bindEvent(this.$el, 'wheel', this.onWheelBoladao),
+        bindEvent(this.$el, 'wheel', this.onScroll),
         bindEvent(window, this.events['move'], this.dragMove),
         bindEvent(window, this.events['end'], this.dragEnd, { passive: true }),
         bindEvent(this.$refs.scrollbar, this.events['start'], this.dragStart, { passive: true })
       ]
+    },
+
+    unbindEvents () {
+      this.$eventsBinded.forEach(unbind => unbind())
+
+      this.mutation.disconnect()
+      this.resizable.disconnect()
     },
 
     setResizableObserver (el) {
@@ -217,12 +261,7 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    this.$eventsBinded.forEach(unbind => unbind())
-
-    this.mutation.disconnect()
-    this.resizable.disconnect()
-  }
+  beforeDestroy () { this.unbindEvents() }
 }
 </script>
 
@@ -246,24 +285,30 @@ html, body {
 }
 
 .full-scrollbar {
+  top: 0;
   right: 0;
-  width: 18px;
+  width: 17px;
   position: fixed;
-}
-
-.full-scrollbar:hover {
-  width: 16px;
-  opacity: 0.3;
-  background: blue;
+  transition: opacity 0.5s;
 }
 
 .scrollbar {
   top: 0px;
   right: 0px;
-  width: 15px;
+  width: 17px;
   position: absolute;
-  background: blue;
+
+  border-radius: 10px;
+  border-color: transparent;
+  -webkit-border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+  background: linear-gradient(135deg, #BC4CF7, #7873EE);
+
   pointer-events: initial;
+
+  transition: opacity 0.5s;
   transform-origin: right top;
 }
+
+.-show-scroll { opacity: 1; }
 </style>
