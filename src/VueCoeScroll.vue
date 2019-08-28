@@ -65,6 +65,7 @@ export default {
       dragging: false,
       lastPosition: 0,
       showScroll: true,
+      activeScroll: true
     }
   },
 
@@ -83,18 +84,16 @@ export default {
       'end': isMobile() ? 'touchend' : 'mouseup'
     }
 
-    const { wrapper: el, content } = this.$refs
+    const { wrapper: el, content, fullscrollbar } = this.$refs
 
     this.bindEvents()
     this.setResizableObserver(el)
     this.setMutationObserver(el, content)
-
-    this.$refs.fullscrollbar.style.height = el.scrollHeight + 'px'
   },
 
   methods: {
     onScroll (e) {
-      if (!this.active) return
+      if (!this.active || !this.activeScroll) return
 
       this.show()
       this.$el.scrollTop += e.deltaY
@@ -132,53 +131,45 @@ export default {
       this.$refs.wrapper.style.pointerEvents = 'auto'
     },
 
-    setPosition ({ el, width, height, scrollHeight }) {
-      console.log({
-        wrapper: this.$refs.wrapper.scrollHeight,
-        scroll: this.$refs.scrollbar.scrollHeight,
-        scrollHeight,
-        height
-      })
-
+    handleScroll (height, scrollHeight) {
       const { scrollbar, wrapper, fullscrollbar } = this.$refs
-
-      // WIP - sometimes it doesn't work :sad_pepe:
-      // remove scrollbar
-      if (this.$refs.wrapper.scrollHeight <= this.$refs.scrollbar.scrollHeight) {
-        scrollbar.style.display = 'none'
-        return
-      }
-
-      this.show()
-
-      // // WIP - sometimes it doesn't work :sad_pepe:
-      // // remove scrollbar
-      // if (height === scrollHeight) {
-      //   scrollbar.style.display = 'none'
-      //   return
-      // }
-
-      scrollbar.style.display = 'block'
-      fullscrollbar.style.height = scrollHeight + 'px'
-
-      // calc to config the scrollbar on the right of the screen
-      el.style.width = `calc(${ width.toString() + 'px' })`
 
       const maxScrollTop = scrollHeight - height
       const scrollbarHeight = Math.pow(height, 2) / scrollHeight
       const maxTopOffset = height - scrollbarHeight
 
-      scrollbar.scaling = maxTopOffset / maxScrollTop
+      // remove scrollbar
+      if (scrollHeight < height) {
+        this.activeScroll = false
+        scrollbar.style.display = 'none'
+        return
+      }
+
+      this.activeScroll = true
+      scrollbar.style.display = 'block'
       scrollbar.style.height = `${scrollbarHeight}px`
+      scrollbar.scaling = maxTopOffset / maxScrollTop
+
+      fullscrollbar.style.height = scrollHeight + 'px'
+    },
+
+    setPosition ({ el, width, height, scrollHeight }) {
+      this.show()
+
+      this.handleScroll(height, scrollHeight)
+
+      const { scrollbar } = this.$refs
+
+      const x = 1 / scrollbar.scaling
       scrollbar.style.transform = `
-        scale(${1 / scrollbar.scaling})
+        scale(${x})
         matrix3d(
           1, 0, 0, 0,
           0, 1, 0, 0,
           0, 0, 1, 0,
           0, 0, 0, -1
         )
-        translateZ(${-2 + 1 - 1 / scrollbar.scaling}px)
+        translateZ(${- 1 - (x)}px)
       `
 
       this.hide()
@@ -211,8 +202,17 @@ export default {
       this.timer = setTimeout(() => this.showScroll = false, this.disappear)
     },
 
+    // WIP
+    // use setPosition
+    onZoom () {
+      matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addEventListener('change', () => {
+        console.log(window.devicePixelRatio * 100)
+      })
+    },
+
     bindEvents () {
       this.$eventsBinded = [
+        bindEvent(window, 'resize', this.onZoom),
         bindEvent(this.$el, 'wheel', this.onScroll),
         bindEvent(window, this.events['move'], this.dragMove),
         bindEvent(window, this.events['end'], this.dragEnd, { passive: true }),
