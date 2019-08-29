@@ -1,5 +1,4 @@
 # vue-coe-scrollbar
-:barber: a customizable scroll bar :construction:
 
 ## init
 - mostra 
