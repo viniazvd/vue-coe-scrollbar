@@ -209,6 +209,9 @@ export default {
 </script>
 
 <style lang="scss">
+@mixin desktop {
+  @media only screen and (max-width: 575px) { @content; }
+}
 * { box-sizing: border-box; }
 
 html, body {
@@ -218,7 +221,7 @@ html, body {
   height: 100%;
 
   overflow: hidden;
-  @media only screen and (max-width: 575px) { overflow: visible; }
+  @include desktop { overflow: visible; }
 }
 
 .vue-coe-scroll {
@@ -228,33 +231,31 @@ html, body {
   perspective-origin: right top;
 
   overflow: hidden;
-  @media only screen and (max-width: 575px) { overflow: visible; }
-}
+  @include desktop { overflow: visible; }
 
-.full-scrollbar {
-  top: 0;
-  right: 0;
-  width: 10px;
-  position: fixed;
-  transition: opacity 0.5s;
-}
+  & > .full-scrollbar {
+    top: 0;
+    right: 0;
+    width: 10px;
+    position: fixed;
+    transition: opacity 0.5s;
+  }
 
-.scrollbar {
-  top: 0px;
-  right: -5px;
-  width: 10px;
-  position: absolute;
+  & > .scrollbar {
+    top: 0px;
+    right: -5px;
+    width: 10px;
+    position: absolute;
 
-  border-radius: 10px;
-  border-color: transparent;
-  -webkit-border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-  background: linear-gradient(135deg, #BC4CF7, #7873EE);
+    border-radius: 10px;
+    border-color: transparent;
+    background: linear-gradient(135deg, #BC4CF7, #7873EE);
 
-  transition: opacity 0.5s;
-  transform-origin: right top;
+    transition: opacity 0.5s;
+    transform-origin: right top;
 
-  visibility: visible;
-  @media only screen and (max-width: 575px) { visibility: hidden; }
+    visibility: visible;
+    @include desktop { visibility: hidden; }
+  }
 }
 </style>
