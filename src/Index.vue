@@ -208,7 +208,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 * { box-sizing: border-box; }
 
 html, body {
@@ -216,15 +216,19 @@ html, body {
   border: 0;
   padding: 0;
   height: 100%;
+
   overflow: hidden;
+  @media only screen and (max-width: 575px) { overflow: visible; }
 }
 
 .vue-coe-scroll {
   flex: 1;
   perspective: 1px;
-  overflow: hidden;
   transform-style: preserve-3d;
   perspective-origin: right top;
+
+  overflow: hidden;
+  @media only screen and (max-width: 575px) { overflow: visible; }
 }
 
 .full-scrollbar {
@@ -247,9 +251,10 @@ html, body {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
   background: linear-gradient(135deg, #BC4CF7, #7873EE);
 
-  pointer-events: initial;
-
   transition: opacity 0.5s;
   transform-origin: right top;
+
+  visibility: visible;
+  @media only screen and (max-width: 575px) { visibility: hidden; }
 }
 </style>
