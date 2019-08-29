@@ -229,6 +229,7 @@ html, body {
 
 .full-scrollbar {
   top: 0;
+  right: 0;
   width: 10px;
   position: fixed;
   transition: opacity 0.5s;
