@@ -1,9 +1,8 @@
 <template>
   <main class="App">
-    <!-- <h1 class="App__title">
+    <h1 class="App__title">
       <code class="App__name">{{ name }}</code>
-      Examples
-    </h1> -->
+    </h1>
 
     <vue-coe-scroll>
       <button @click="content.push('kkk')">add</button>
@@ -33,9 +32,11 @@ export default {
 
 <style lang="scss">
 .App {
-  &__title {
-    font-size: 28px;
-  }
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__title { font-size: 28px; }
 }
 
 .list {
