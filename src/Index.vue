@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { isMobile, bindEvent } from './services'
+import { bindEvent } from './services'
 
 export default {
   name: 'vue-coe-scrollbar',
@@ -48,7 +48,6 @@ export default {
   data () {
     return {
       timer: 0,
-      events: {},
       mutation: null,
       dragging: false,
       lastPosition: 0,
@@ -65,66 +64,51 @@ export default {
   },
 
   mounted () {
-    // TODO: must to be reactive?
-    this.events = {
-      'start': isMobile() ? 'touchstart' : 'mousedown',
-      'move': isMobile() ? 'touchmove' : 'mousemove',
-      'end': isMobile() ? 'touchend' : 'mouseup'
-    }
-
-    const { wrapper: el, content } = this.$refs
+    const { wrapper, content } = this.$refs
 
     this.bindEvents()
     this.setPosition()
-    this.initMutationObserver(el, content)
+    this.initMutationObserver(wrapper, content)
   },
 
   methods: {
-    onScroll (e) {
+    onScroll ({ deltaY }) {
       if (!this.active || !this.activeScroll) return
 
       this.show()
-      this.$el.scrollTop += e.deltaY
+      this.$refs.wrapper.scrollTop += deltaY
       this.hide()
     },
 
-    dragStart ({ clientY: currentY, touches }) {
+    dragStart ({ clientY: currentY }) {
       this.dragging = true
       this.show()
 
-      this.$refs.wrapper.style.pointerEvents = 'none'
-
-      this.lastPosition = currentY !== undefined ? currentY : touches[0].clientY
+      this.lastPosition = currentY
+      this.$refs.wrapper.style.userSelect = 'none'
     },
 
-    dragMove (event) {
+    dragMove ({ clientY: currentY }) {
       if (!this.dragging) return
-
-      const currentY = event.clientY !== undefined
-        ? event.clientY
-        : event.touches[0].clientY
 
       this.$refs.wrapper.scrollTop += (currentY - this.lastPosition) / this.$refs.scrollbar.scaling
       this.lastPosition = currentY
-
-      if (!isMobile()) event.preventDefault()
     },
 
     dragEnd (event) {
       this.dragging = false
       this.hide()
-
-      this.$refs.wrapper.style.pointerEvents = 'auto'
+      this.$refs.wrapper.style.userSelect = 'auto'
     },
 
     handleScroll () {
-      const { wrapper, scrollbar, fullscrollbar } = this.$refs
+      const { wrapper, scrollbar, fullscrollbar, content } = this.$refs
 
       const height = wrapper.clientHeight
-      const fullHeight = this.$refs.content.scrollHeight
+      const fullHeight = content.scrollHeight
 
       // remove scrollbar
-      if (fullHeight < height) {
+      if (fullHeight <= height) {
         this.activeScroll = false
         scrollbar.style.display = 'none'
         return
@@ -192,14 +176,14 @@ export default {
 
     bindEvents () {
       this.$eventsBinded = [
-        bindEvent(window, 'wheel', this.onScroll),
+        bindEvent(window, 'wheel', this.onScroll), // scroll
         // resize event
         // to trigger on zoom
         // resizable observer does not detect this change
         bindEvent(window, 'resize', this.setPosition),
-        bindEvent(window, this.events['move'], this.dragMove),
-        bindEvent(window, this.events['end'], this.dragEnd, { passive: true }),
-        bindEvent(this.$refs.scrollbar, this.events['start'], this.dragStart, { passive: true })
+        bindEvent(window, 'mousemove', this.dragMove), // move
+        bindEvent(window, 'mouseup', this.dragEnd, { passive: true }), // end
+        bindEvent(this.$refs.scrollbar, 'mousedown', this.dragStart, { passive: true }) // start
       ]
     },
 
@@ -236,7 +220,7 @@ html, body {
 }
 
 .vue-coe-scroll {
-  height: 100vh;
+  flex: 1;
   perspective: 1px;
   overflow: hidden;
   transform-style: preserve-3d;
@@ -245,16 +229,15 @@ html, body {
 
 .full-scrollbar {
   top: 0;
-  right: 0;
-  width: 17px;
+  width: 10px;
   position: fixed;
   transition: opacity 0.5s;
 }
 
 .scrollbar {
   top: 0px;
-  right: 0px;
-  width: 17px;
+  right: -5px;
+  width: 10px;
   position: absolute;
 
   border-radius: 10px;
