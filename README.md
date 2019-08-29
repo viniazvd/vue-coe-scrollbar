@@ -21,5 +21,3 @@
 - mostra
 - desliza x posições
 - sai após x tempo
-
- 
