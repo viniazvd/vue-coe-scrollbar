@@ -148,7 +148,6 @@ export default {
     },
 
     onClick ({ clientY }) {
-      console.log('dasdas')
       const { scrollbar, wrapper } = this.$refs
       const { top, height } = scrollbar.getBoundingClientRect()
 
