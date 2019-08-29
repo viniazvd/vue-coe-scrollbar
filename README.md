@@ -1,5 +1,4 @@
 # vue-coe-scrollbar
-:barber: a customizable scroll bar :construction:
 
 ## init
 - mostra 
@@ -22,5 +21,3 @@
 - mostra
 - desliza x posições
 - sai após x tempo
-
- 
