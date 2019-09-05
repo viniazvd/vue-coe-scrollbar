@@ -19,8 +19,8 @@
       :style="{
         opacity: +showScroll,
         display: scrollDisplay,
-        height: scrollbarHeight + 'px',
-        width: scrollbarWidth + 'px'
+        width: scrollbarWidth + 'px',
+        height: scrollbarHeight + 'px'
       }"
       @mouseout="hide"
       @mouseover="show"
@@ -108,9 +108,9 @@ export default {
   computed: {
     translateY () {
       return {
+        '--user-select': this.userSelect,
         '--position-scroll': this.scrollPosition + 'px',
-        '--position-content': this.contentPosition + 'px',
-        'userSelect': this.userSelect
+        '--position-content': this.contentPosition + 'px'
       }
     },
 
@@ -295,6 +295,8 @@ html, body {
 .vue-coe-scroll {
   height: 100%;
   position: relative;
+
+  user-select: var(--user-select);
 
   overflow: hidden;
   @include desktop { overflow: visible; }
