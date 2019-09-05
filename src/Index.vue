@@ -142,8 +142,6 @@ export default {
     },
 
     handleScroll () {
-      const oldFullHeight = this.fullHeight
-
       this.setHeights()
       this.scrollbarWidth = 20 / window.devicePixelRatio.toFixed(2)
 
