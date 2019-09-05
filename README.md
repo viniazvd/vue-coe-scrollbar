@@ -13,6 +13,6 @@
 <br>
 
 **Install** <br>
-`yarn add vue-coe-scrollbar`
-or
+`yarn add vue-coe-scrollbar` 
+<br>or<br> 
 `npm i add vue-coe-scrollbar`
