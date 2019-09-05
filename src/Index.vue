@@ -315,7 +315,7 @@ html, body {
 
     display: block;
 
-    border-radius: 30px;
+    border-radius: 50px;
     border-color: transparent;
     background: linear-gradient(135deg, #BC4CF7, #7873EE);
 
