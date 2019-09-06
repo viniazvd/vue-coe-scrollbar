@@ -15,3 +15,12 @@ export function easeInOutQuad (time, start, change, duration) {
 
   return -change / 2 * (time * (time - 2) - 1) + start
 }
+
+const isBrowser = () => (typeof document !== 'undefined')
+
+// compatibility SSR -ty @vinicius73
+export function getZoom () {
+  if (!isBrowser) return 1
+
+  return window.devicePixelRatio.toFixed(2)
+}
