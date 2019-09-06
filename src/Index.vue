@@ -47,7 +47,7 @@ export default {
       default: true
     },
 
-    // Jump on click 
+    // Jump on click
     jump: {
       type: Number,
       default: 700
@@ -75,6 +75,12 @@ export default {
     scrollbarWidth: {
       type: Number,
       default: 12
+    },
+
+    // Emit event on scroll
+    emitScroll: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -165,11 +171,12 @@ export default {
       this.hide()
     },
 
-    onScroll ({ deltaY }) {
+    onScroll (e) {
       if (!this.active || !this.hasScroll) return
+      if (this.emitScroll) this.$emit('coe:scroll', e)
 
       this.show()
-      this.scrollbarPosition += Math.ceil(deltaY * this.speed)
+      this.scrollbarPosition += Math.ceil(e.deltaY * this.speed)
       this.hide()
     },
 
