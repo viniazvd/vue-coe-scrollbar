@@ -24,3 +24,28 @@ export function getZoom () {
 
   return window.devicePixelRatio.toFixed(2)
 }
+
+export const getSrollValues = fullHeight => {
+  return {
+    'Space': 700,
+    'ArrowUp': -50,
+    'ArrowDown': 50,
+    'PageUp': -700,
+    'PageDown': 700,
+    'End': fullHeight,
+    'Home': -fullHeight
+  }
+}
+
+const scrollOptions = [
+  'Space',
+  'ArrowUp',
+  'ArrowDown',
+  'PageUp',
+  'PageDown',
+  'End',
+  'Home'
+]
+
+export const isValid = code => scrollOptions.includes(code)
+export const isArrow = code => [ 'ArrowUp', 'ArrowDown' ].includes(code)
