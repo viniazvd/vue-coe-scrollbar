@@ -7,7 +7,12 @@
       <span class="App__total">n contents {{ content.length }}</span>
     </h1>
 
-    <vue-coe-scroll class="List" :scrollbar-width="12">
+    <vue-coe-scroll
+      class="List"
+      emit-scroll
+      :scrollbar-width="12"
+      @coe:scroll="scroll"
+    >
       <div v-for="(x, i) in content" :key="i" class="List__item"></div>
     </vue-coe-scroll>
   </main>
@@ -24,6 +29,12 @@ export default {
     return {
       name,
       content: Array.from(({ length: 10 }), (x, i) => i)
+    }
+  },
+
+  methods: {
+    scroll (e) {
+      console.log(e)
     }
   }
 }
