@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="wrapper"
-    class="vue-coe-scroll"
-    :style="styles"
-  >
+  <div ref="wrapper" class="vue-coe-scroll" :style="styles">
     <div
       class="full-scrollbar"
       :style="{
@@ -35,7 +31,14 @@
 </template>
 
 <script>
-import { bindEvent, easeInOutQuad, getZoom } from './services'
+import {
+  isValid,
+  isArrow,
+  getZoom,
+  bindEvent,
+  easeInOutQuad,
+  getSrollValues
+} from './services'
 
 export default {
   name: 'vue-coe-scrollbar',
@@ -201,35 +204,35 @@ export default {
       this.userSelect = 'auto'
     },
 
-    scrollTo (position) {
-      const percentage = (100 * position) / this.fullHeight
+    scrollTo (y, duration = this.scrollDuration) {
+      this.show()
 
       let time = 0
       const increment = 20
       const start = this.scrollbarPosition
+      const percentage = (100 * y) / this.fullHeight
       const end = this.scrollbarPosition + (percentage / 100) * this.scrollTotal
 
       const animate = () => {
         time += increment
+        this.scrollbarPosition = easeInOutQuad(time, start, end - start, duration)
 
-        this.scrollbarPosition = easeInOutQuad(time, start, end - start, this.scrollDuration)
-
-        if (time < this.scrollDuration) requestAnimationFrame(animate)
+        if (time < duration) requestAnimationFrame(animate)
       }
 
       animate()
+      this.hide()
     },
 
     onClick ({ clientY }) {
       const { scrollbar, wrapper } = this.$refs
       const { top, height } = scrollbar.getBoundingClientRect()
 
-      const lastY = Math.round(top - (height / 2))
       const currentY = clientY - (height / 2)
+      const lastY = Math.round(top - (height / 2))
+      const y = lastY < currentY ? this.jump : -this.jump
 
-      const increment = lastY < currentY ? this.jump : - this.jump
-
-      this.scrollTo(increment)
+      this.scrollTo(y)
     },
 
     show () {
@@ -246,12 +249,22 @@ export default {
       this.timer = setTimeout(() => this.showScroll = false, this.disappear)
     },
 
+    onKeyup ({ code }) {
+      if (!isValid(code)) return
+
+      const y = getSrollValues(this.fullHeight)[code]
+      const duration = isArrow(code) ? 50 : this.duration
+
+      this.scrollTo(y, duration)
+    },
+
     bindEvents () {
       this.$eventsBinded = [
         bindEvent(window, 'mousemove', this.dragMove), // move
         bindEvent(window, 'resize', this.update), // resize | zoom
         bindEvent(window, 'mouseup', this.dragEnd, { passive: true }), // end
         bindEvent(window, 'wheel', this.onScroll, { passive: true }), // scroll
+        bindEvent(window, 'keydown', this.onKeyup, { passive: true }), // up | down | space | etc
         bindEvent(this.$refs.scrollbar, 'mousedown', this.dragStart, { passive: true }) // start
       ]
     },
