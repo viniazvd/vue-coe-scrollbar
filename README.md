@@ -1,23 +1,18 @@
-# vue-coe-scrollbar
+<h1 align="center">vue-coe-scrollbar ✅</h1>
 
-## init
-- mostra 
-- sai após x tempo
+<p align="center">
+  <a href="#"><img src="https://img.shields.io/npm/l/vuelidation.svg" alt="License" target="_blank"></a>
+</p>
 
-## scroll
-- mostra
-- sair após x tempo
+<br>
 
-## hover (scroll)
-- mostra
-- continua até sair do scroll
+<p align="center">
+  ✨ <a href="#">Example</a>✨
+</p>
 
-## draggin
-- draggON: mostra
-- draggMOVE: mostra
-- draggOFF: sai após x tempo
+<br>
 
-## click
-- mostra
-- desliza x posições
-- sai após x tempo
+**Install** <br>
+`yarn add vue-coe-scrollbar` 
+<br>or<br> 
+`npm i add vue-coe-scrollbar`
