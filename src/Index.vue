@@ -2,12 +2,14 @@
   <div
     ref="wrapper"
     class="vue-coe-scroll"
-    :style="translateY"
+    :style="styles"
   >
     <div
-      ref="fullscrollbar"
       class="full-scrollbar"
-      :style="{ height: fullHeight + 'px' }"
+      :style="{
+        height: fullHeight + 'px',
+        width: scrollbarAppliedWidth + 'px'
+      }"
       @mouseout="hide"
       @mouseover="show"
       @mousedown="onClick"
@@ -15,11 +17,11 @@
 
     <div
       ref="scrollbar"
+      v-show="hasScroll && active"
       class="scrollbar"
       :style="{
         opacity: +showScroll,
-        display: scrollDisplay,
-        width: scrollbarWidth + 'px',
+        width: scrollbarAppliedWidth + 'px',
         height: scrollbarHeight + 'px'
       }"
       @mouseout="hide"
@@ -39,30 +41,40 @@ export default {
   name: 'vue-coe-scrollbar',
 
   props: {
+    // Disable scroll if false
     active: {
       type: Boolean,
       default: true
     },
 
+    // Jump on click 
     jump: {
       type: Number,
       default: 700
     },
 
+    // The delay before scrollbar hides
     disappear: {
       type: Number,
       default: 1500
     },
 
+    // The transition time on click/keydown (ms)
     scrollDuration: {
       type: Number,
       default: 300
     },
 
+    // The scroll wheel speed ratio
     speed: {
       type: Number,
       default: 0.1,
-      validator: speed => speed >= 0.1 && speed <= 1
+      validator: speed => speed > 0 && speed <= 1
+    },
+
+    scrollbarWidth: {
+      type: Number,
+      default: 12
     }
   },
 
@@ -73,27 +85,26 @@ export default {
       dragging: false,
 
       showScroll: true,
-      activeScroll: true,
+      hasScroll: true,          // fullHeight < height = false
 
-      timer: 0,
+      timer: 0,                 // Used to prevent scroll fade more than once
 
-      height: 0,
-      fullHeight: 0,
+      height: 0,                // The view height (the clientHeight)
+      fullHeight: 0,            // Total content height (.content scrollHeight)
 
-      lastPosition: 0,
-      scrollPosition: 0,
-      scrollbarHeight: 0,
-      scrollbarWidth: 20,
+      lastClickPosition: 0,     // Updated when full-scrollbar is clicked
 
-      userSelect: 'auto',
-      scrollDisplay: 'block'
+      scrollbarPosition: 0,
+      scrollbarAppliedWidth: 0, // scrollbarWidth / zoom
+
+      userSelect: 'auto',       // Prevent selection on drag
     }
   },
 
   watch: {
-    scrollPosition (value) {
-      if (value <= 0) this.scrollPosition = 0
-      if (value >= this.scrollTotal) this.scrollPosition = this.scrollTotal
+    scrollbarPosition (value) {
+      if (value <= 0) this.scrollbarPosition = 0
+      if (value >= this.scrollTotal) this.scrollbarPosition = this.scrollTotal
     }
   },
 
@@ -101,15 +112,15 @@ export default {
     const { wrapper, content } = this.$refs
 
     this.bindEvents()
-    this.setPosition()
+    this.update()
     this.initMutationObserver(wrapper, content)
   },
 
   computed: {
-    translateY () {
+    styles () {
       return {
         '--user-select': this.userSelect,
-        '--position-scroll': this.scrollPosition + 'px',
+        '--position-scroll': this.scrollbarPosition + 'px',
         '--position-content': this.contentPosition + 'px'
       }
     },
@@ -123,12 +134,16 @@ export default {
     },
 
     contentPosition () {
-      const percentage = (100 * this.scrollPosition) / this.scrollTotal
+      const percentage = (100 * this.scrollbarPosition) / this.scrollTotal
 
       if (percentage <= 0) return 0
       if (percentage >= 100) return -this.total
 
       return -((percentage / 100) * this.total)
+    },
+
+    scrollbarHeight () {
+      return Math.ceil(Math.pow(this.height, 2) / this.fullHeight)
     }
   },
 
@@ -138,53 +153,39 @@ export default {
 
       this.height = wrapper.clientHeight
       this.fullHeight = wrapper.scrollHeight
-      this.scrollbarHeight = Math.ceil(Math.pow(this.height, 2) / this.fullHeight)
     },
 
-    handleScroll () {
-      this.setHeights()
-      this.scrollbarWidth = 20 / getZoom()
-
-      // remove scrollbar
-      if (this.fullHeight <= this.height) {
-        this.activeScroll = false
-        this.scrollDisplay = 'none'
-        return
-      }
-
-      this.activeScroll = true
-      this.scrollDisplay = 'block'
-    },
-
-    setPosition () {
+    update () {
       this.show()
+      this.setHeights()
 
-      this.handleScroll()
+      this.scrollbarAppliedWidth = this.scrollbarWidth / getZoom()
+      this.hasScroll = this.fullHeight > this.height
 
       this.hide()
     },
 
     onScroll ({ deltaY }) {
-      if (!this.active || !this.activeScroll) return
+      if (!this.active || !this.hasScroll) return
 
       this.show()
-      this.scrollPosition += Math.ceil(deltaY * this.speed)
+      this.scrollbarPosition += Math.ceil(deltaY * this.speed)
       this.hide()
     },
 
-    dragStart ({ clientY: currentY }) {
+    dragStart ({ clientY: currentClickPosition }) {
       this.dragging = true
       this.show()
 
       this.userSelect = 'none'
-      this.lastPosition = currentY
+      this.lastClickPosition = currentClickPosition
     },
 
-    dragMove ({ clientY: currentY }) {
+    dragMove ({ clientY: currentClickPosition }) {
       if (!this.dragging) return
 
-      this.scrollPosition += currentY - this.lastPosition
-      this.lastPosition = currentY
+      this.scrollbarPosition += currentClickPosition - this.lastClickPosition
+      this.lastClickPosition = currentClickPosition
     },
 
     dragEnd (event) {
@@ -198,13 +199,13 @@ export default {
 
       let time = 0
       const increment = 20
-      const start = this.scrollPosition
-      const end = this.scrollPosition + (percentage / 100) * this.scrollTotal
+      const start = this.scrollbarPosition
+      const end = this.scrollbarPosition + (percentage / 100) * this.scrollTotal
 
       const animate = () => {
         time += increment
 
-        this.scrollPosition = easeInOutQuad(time, start, end - start, this.scrollDuration)
+        this.scrollbarPosition = easeInOutQuad(time, start, end - start, this.scrollDuration)
 
         if (time < this.scrollDuration) requestAnimationFrame(animate)
       }
@@ -220,9 +221,8 @@ export default {
       const currentY = clientY - (height / 2)
 
       const increment = lastY < currentY ? this.jump : - this.jump
-      const position = wrapper.scrollTop + increment
 
-      this.scrollTo(position)
+      this.scrollTo(increment)
     },
 
     show () {
@@ -241,11 +241,8 @@ export default {
 
     bindEvents () {
       this.$eventsBinded = [
-        // resize event
-        // to trigger on zoom
-        // resizable observer does not detect this change
-        bindEvent(window, 'resize', this.setPosition),
         bindEvent(window, 'mousemove', this.dragMove), // move
+        bindEvent(window, 'resize', this.update), // resize | zoom
         bindEvent(window, 'mouseup', this.dragEnd, { passive: true }), // end
         bindEvent(window, 'wheel', this.onScroll, { passive: true }), // scroll
         bindEvent(this.$refs.scrollbar, 'mousedown', this.dragStart, { passive: true }) // start
@@ -259,9 +256,8 @@ export default {
     },
 
     initMutationObserver (el, content) {
-      this.mutation = new MutationObserver(mutations => {
-        mutations.forEach(mutation => this.setPosition())
-      })
+      const callback = mutations => mutations.forEach(this.update)
+      this.mutation = new MutationObserver(callback)
 
       const config = { childList: true, characterData: true }
 
@@ -276,20 +272,11 @@ export default {
 </script>
 
 <style lang="scss">
-@mixin desktop {
+@mixin mobile {
   @media only screen and (max-width: 575px) { @content; }
 }
-
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  height: 100%;
-
-  overflow: hidden;
-  @include desktop { overflow: visible; }
+@mixin desktop {
+  @media only screen and (min-width: 575px) { @content; }
 }
 
 .vue-coe-scroll {
@@ -299,13 +286,12 @@ html, body {
   user-select: var(--user-select);
 
   overflow: hidden;
-  @include desktop { overflow: visible; }
+  @include mobile { overflow: visible; }
 
   & > .full-scrollbar {
     top: 0;
     right: 0;
     z-index: 2;
-    width: 10px;
     position: fixed;
     transition: opacity 0.5s;
   }
@@ -325,13 +311,15 @@ html, body {
     transform: translateY(var(--position-scroll));
 
     visibility: visible;
-    @include desktop { visibility: hidden; }
+    @include mobile { visibility: hidden; }
   }
 
   & > .content {
     z-index: 1;
-    height: 100%;
-    transform: translateY(var(--position-content));
+
+    @include desktop {
+      transform: translateY(var(--position-content));
+    }
   }
 }
 </style>
