@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { bindEvent, easeInOutQuad } from './services'
+import { bindEvent, easeInOutQuad, getZoom } from './services'
 
 export default {
   name: 'vue-coe-scrollbar',
@@ -143,7 +143,7 @@ export default {
 
     handleScroll () {
       this.setHeights()
-      this.scrollbarWidth = 20 / window.devicePixelRatio.toFixed(2)
+      this.scrollbarWidth = 20 / getZoom()
 
       // remove scrollbar
       if (this.fullHeight <= this.height) {
@@ -269,7 +269,9 @@ export default {
     }
   },
 
-  beforeDestroy () { this.unbindEvents() }
+  beforeDestroy () {
+    this.unbindEvents()
+  }
 }
 </script>
 
