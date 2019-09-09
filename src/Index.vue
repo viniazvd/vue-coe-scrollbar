@@ -3,8 +3,9 @@
     <div
       class="full-scrollbar"
       :style="{
+        opacity: +showScroll,
         height: fullHeight + 'px',
-        width: scrollbarAppliedWidth + 'px'
+        width: scrollbarAppliedWidth + 8 + 'px'
       }"
       @mouseout="hide"
       @mouseover="show"
@@ -16,7 +17,7 @@
       v-show="hasScroll && active"
       class="scrollbar"
       :style="{
-        opacity: +showScroll,
+        opacity: dragging ? 1 : +showScroll ? .5 : 0,
         width: scrollbarAppliedWidth + 'px',
         height: scrollbarHeight + 'px'
       }"
@@ -77,7 +78,17 @@ export default {
 
     scrollbarWidth: {
       type: Number,
-      default: 12
+      default: 10
+    },
+
+    scrollbarColor: {
+      type: String,
+      default: '#949494'
+    },
+
+    scrollbarBackground: {
+      type: String,
+      default: '#fefefe'
     },
 
     // Emit event on scroll
@@ -130,7 +141,9 @@ export default {
       return {
         '--user-select': this.userSelect,
         '--position-scroll': this.scrollbarPosition + 'px',
-        '--position-content': this.contentPosition + 'px'
+        '--position-content': this.contentPosition + 'px',
+        '--scrollbar-color': this.scrollbarColor,
+        '--scrollbar-background': this.scrollbarBackground
       }
     },
 
@@ -312,12 +325,13 @@ export default {
     top: 0;
     right: 0;
     z-index: 2;
-    position: fixed;
-    transition: opacity 0.5s;
+    position: absolute;
+    background: var(--scrollbar-background);
+    transition: opacity .3s;
   }
 
   & > .scrollbar {
-    right: 0;
+    right: 4px;
     z-index: 2;
     position: absolute;
 
@@ -325,13 +339,22 @@ export default {
 
     border-radius: 50px;
     border-color: transparent;
-    background: linear-gradient(135deg, #BC4CF7, #7873EE);
+    background: var(--scrollbar-color);
 
     transition: opacity 0.5s;
     transform: translateY(var(--position-scroll));
 
     visibility: visible;
     @include mobile { visibility: hidden; }
+    &:hover{ opacity: 1 !important; }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -4px;
+      left: -4px;
+      bottom: 0;
+    }
   }
 
   & > .content {
