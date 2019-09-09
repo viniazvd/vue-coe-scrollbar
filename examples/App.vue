@@ -1,19 +1,20 @@
 <template>
-  <main class="App">
-    <h1 class="App__title">
-      <span class="App__name">{{ name }}</span>
-      <button @click="content.push('kkk')">add</button>
-      <button @click="content.pop()">remove</button>
-      <span class="App__total">n contents {{ content.length }}</span>
-    </h1>
+  <main class="app">
+    <div class="app__header">
+      <span class="app__name">{{ name }}</span>
+      <button class="app__button" @click="content.push('kkk')">add</button>
+      <button class="app__button" @click="content.pop()">remove</button>
+    </div>
 
     <vue-coe-scroll
-      class="List"
+      class="list"
       emit-scroll
-      :scrollbar-width="12"
       @coe:scroll="scroll"
     >
-      <div v-for="(x, i) in content" :key="i" class="List__item"></div>
+      <div v-for="(x, i) in content" :key="i + '_first'" class="list__item"></div>
+      <div v-for="(x, i) in content" :key="i + '_second'" class="list__item"></div>
+      <div v-for="(x, i) in content" :key="i + '_third'" class="list__item"></div>
+      <div v-for="(x, i) in content" :key="i + '_fourth'" class="list__item"></div>
     </vue-coe-scroll>
   </main>
 </template>
@@ -28,7 +29,7 @@ export default {
   data () {
     return {
       name,
-      content: Array.from(({ length: 10 }), (x, i) => i)
+      content: Array.from(({ length: 4 }), (x, i) => i)
     }
   },
 
@@ -54,25 +55,46 @@ html, body {
   @media only screen and (max-width: 575px) { overflow: visible; }
 }
 
-.App {
+.app {
   height: 100%;
   display: flex;
   flex-direction: column;
 
-  &__title { font-size: 28px; }
-  &__name { display: block; }
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(black, .5);
+  }
+  &__name {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  &__button {
+    border: 0;
+    background: black;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 8px 16px;
+    margin: 0 4px;
+    cursor: pointer;
+    outline: none;
+  }
 }
 
-.List {
+.list {
   & > .content {
+    background: linear-gradient(135deg, rgba(salmon, .8) 0%, rgba(cyan, .6) 100%);
+    padding: 8px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
-    padding: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
   }
   &__item {
-    background: red;
+    background: rgba(200, 0, 255, .5);
     &:after{
       content: '';
       display: block;
