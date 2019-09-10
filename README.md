@@ -14,6 +14,9 @@
 
 **Competitive Diferentials**
 <ul style='margin: 0; padding: 0; color: red; list-style-type: none;'>
+  <li>keyboard support</li>
+  <li>clean and documented code</li>
+  <li>very light, bundle size: 2.2kB</li>
   <li>compatibility SSR -ty @vinicius73</li>
   <li>state-based, preventing re-paint -ty @vinicius73</li>
   <li>based on transform, property calculated on GPU: ty, @VitorLuizC</li>
