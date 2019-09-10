@@ -16,3 +16,6 @@
 `yarn add vue-coe-scrollbar` 
 <br>or<br> 
 `npm i add vue-coe-scrollbar`
+
+**Bundle size**
+- 2.2 kB
