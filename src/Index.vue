@@ -4,7 +4,7 @@
       <div
         class="full-scrollbar"
         :style="{
-          opacity: 1,
+          opacity: +showScroll,
           width: fullScrollbarWidth + 'px'
         }"
         @mouseout="hide"
@@ -16,7 +16,7 @@
         ref="scrollbar"
         class="scrollbar"
         :style="{
-          opacity: 1,
+          opacity: +showScroll,
           width: scrollbarWidth + 'px',
           height: scrollbarHeight + 'px'
         }"
@@ -25,14 +25,7 @@
       />
     </div>
 
-    <div
-      ref="content"
-      class="content"
-      :style="{
-        height: active ? 'auto' : '100%',
-        transform: active ? 'translateY(' + contentPosition + 'px)' : 'initial'
-      }"
-    >
+    <div ref="content" class="content">
       <slot />
     </div>
   </div>
@@ -135,6 +128,8 @@ export default {
     scrollbarPosition (value) {
       if (value <= 0) this.scrollbarPosition = 0
       if (value >= this.scrollTotal) this.scrollbarPosition = this.scrollTotal
+
+      if (this.active) this.$refs.content.scrollTop = -this.contentPosition
     }
   },
 
@@ -149,12 +144,11 @@ export default {
       return {
         '--user-select': this.userSelect,
 
-        // '--position-content': this.contentPosition + 'px',
         '--position-scroll': this.scrollbarPosition + 'px',
 
         '--scrollbar-color': this.color,
-        '--scrollbar-right': this.scrollbarRight + 'px',
-        '--scrollbar-background': this.background
+        '--scrollbar-background': this.background,
+        '--scrollbar-right': this.scrollbarRight + 'px'
       }
     },
 
@@ -185,7 +179,7 @@ export default {
       const { wrapper, content } = this.$refs
 
       this.height = wrapper.clientHeight
-      this.fullHeight = wrapper.scrollHeight
+      this.fullHeight = content.scrollHeight
     },
 
     update () {
@@ -210,6 +204,7 @@ export default {
 
       this.show()
       this.scrollbarPosition += Math.ceil(e.deltaY * this.speed)
+
       this.hide()
     },
 
@@ -335,8 +330,6 @@ export default {
 
   user-select: var(--user-select);
 
-  overflow: hidden;
-  @include mobile { overflow: visible; }
 
   & > .scrollbar-wrapper {
     @include mobile { display: none; }
@@ -383,8 +376,10 @@ export default {
 
   & > .content {
     z-index: 1;
+    overflow: hidden;
+    height: 100%;
 
-    @include mobile { transform: initial; }
+    @include mobile { overflow: auto; }
   }
 }
 </style>
