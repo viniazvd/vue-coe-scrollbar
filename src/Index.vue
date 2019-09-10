@@ -4,8 +4,8 @@
       <div
         class="full-scrollbar"
         :style="{
-          opacity: +showScroll,
-          width: scrollbarAppliedWidth + 8 + 'px'
+          opacity: 1,
+          width: fullScrollbarWidth + 'px'
         }"
         @mouseout="hide"
         @mouseover="show"
@@ -16,8 +16,8 @@
         ref="scrollbar"
         class="scrollbar"
         :style="{
-          opacity: +showScroll,
-          width: scrollbarAppliedWidth + 'px',
+          opacity: 1,
+          width: scrollbarWidth + 'px',
           height: scrollbarHeight + 'px'
         }"
         @mouseout="hide"
@@ -76,17 +76,18 @@ export default {
       validator: speed => speed > 0 && speed <= 1
     },
 
-    scrollbarWidth: {
+    // scrollbar width base
+    width: {
       type: Number,
       default: 10
     },
 
-    scrollbarColor: {
+    color: {
       type: String,
       default: '#bbbbbb'
     },
 
-    scrollbarBackground: {
+    background: {
       type: String,
       default: '#fefefe'
     },
@@ -114,10 +115,12 @@ export default {
 
       lastClickPosition: 0,     // Updated when full-scrollbar is clicked
 
+      scrollbarRight: 4,        // scrollbar position right
+      scrollbarWidth: 0,        // width / zoom
+      fullScrollbarWidth: 0,     // width / (8 / zoom)
       scrollbarPosition: 0,
-      scrollbarAppliedWidth: 0, // scrollbarWidth / zoom
 
-      userSelect: 'auto',       // Prevent selection on drag
+      userSelect: 'auto'        // Prevent selection on drag
     }
   },
 
@@ -138,10 +141,13 @@ export default {
     styles () {
       return {
         '--user-select': this.userSelect,
-        '--position-scroll': this.scrollbarPosition + 'px',
+
         '--position-content': this.contentPosition + 'px',
-        '--scrollbar-color': this.scrollbarColor,
-        '--scrollbar-background': this.scrollbarBackground
+        '--position-scroll': this.scrollbarPosition + 'px',
+
+        '--scrollbar-color': this.color,
+        '--scrollbar-right': this.scrollbarRight + 'px',
+        '--scrollbar-background': this.background
       }
     },
 
@@ -179,8 +185,12 @@ export default {
       this.show()
       this.setHeights()
 
-      this.scrollbarAppliedWidth = this.scrollbarWidth / getZoom()
       this.hasScroll = this.fullHeight > this.height
+
+      this.scrollbarRight = 4 / getZoom()
+      this.scrollbarWidth = this.width / getZoom()
+
+      this.fullScrollbarWidth = this.scrollbarWidth + (8 / getZoom())
 
       this.hide()
     },
@@ -333,7 +343,7 @@ export default {
     }
 
     & > .scrollbar {
-      right: 4px;
+      right: var(--scrollbar-right);
       z-index: 2;
       position: absolute;
 
@@ -348,14 +358,16 @@ export default {
 
       visibility: visible;
       @include mobile { visibility: hidden; }
+
       &:hover{ opacity: 1 !important; }
+
       &:before {
         content: "";
         position: absolute;
         top: 0;
-        right: -4px;
-        left: -4px;
         bottom: 0;
+        left: calc(var(--scrollbar-right) * - 1);
+        right: calc(var(--scrollbar-right) * - 1);
       }
     }
   }
