@@ -5,7 +5,6 @@
         class="full-scrollbar"
         :style="{
           opacity: +showScroll,
-          height: fullHeight + 'px',
           width: scrollbarAppliedWidth + 8 + 'px'
         }"
         @mouseout="hide"
@@ -130,11 +129,9 @@ export default {
   },
 
   mounted () {
-    const { wrapper, content } = this.$refs
-
     this.bindEvents()
     this.update()
-    this.initMutationObserver(wrapper, content)
+    this.initMutationObserver(this.$refs.content)
   },
 
   computed: {
@@ -175,7 +172,7 @@ export default {
       const { wrapper, content } = this.$refs
 
       this.height = wrapper.clientHeight
-      this.fullHeight = content.clientHeight
+      this.fullHeight = wrapper.scrollHeight
     },
 
     update () {
@@ -289,13 +286,13 @@ export default {
       this.mutation.disconnect()
     },
 
-    initMutationObserver (el, content) {
+    initMutationObserver (el) {
       const callback = mutations => mutations.forEach(this.update)
       this.mutation = new MutationObserver(callback)
 
-      const config = { childList: true, characterData: true }
+      const config = { childList: true, subtree: true, characterData: true }
 
-      this.mutation.observe(content, config)
+      this.mutation.observe(el, config)
     }
   },
 
@@ -328,6 +325,7 @@ export default {
     & > .full-scrollbar {
       top: 0;
       right: 0;
+      bottom: 0;
       z-index: 2;
       position: absolute;
       background: var(--scrollbar-background);
