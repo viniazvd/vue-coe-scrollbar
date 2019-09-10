@@ -2,33 +2,63 @@
   <main class="app">
     <div class="app__header">
       <span class="app__name">{{ name }}</span>
-      <button class="app__button" @click="content.push('kkk')">add</button>
+
       <button class="app__button" @click="content.pop()">remove</button>
+      <button class="app__button" @click="content.push('kkk')">add</button>
+      <button class="app__button" @click="showModal = !showModal">show modal</button>
     </div>
 
-    <vue-coe-scroll
-      class="list"
-      emit-scroll
-      @coe:scroll="scroll"
-    >
-      <div v-for="(x, i) in content" :key="i + '_first'" class="list__item"></div>
-      <div v-for="(x, i) in content" :key="i + '_second'" class="list__item"></div>
-      <div v-for="(x, i) in content" :key="i + '_third'" class="list__item"></div>
-      <div v-for="(x, i) in content" :key="i + '_fourth'" class="list__item"></div>
+    <vue-coe-scroll emit-scroll @coe:scroll="scroll" :active="!showModal">
+      <div class="list">
+        <div v-for="(x, i) in content" :key="i + '_first'" class="list__item"></div>
+        <div v-for="(x, i) in content" :key="i + '_second'" class="list__item"></div>
+        <div v-for="(x, i) in content" :key="i + '_third'" class="list__item"></div>
+        <div v-for="(x, i) in content" :key="i + '_fourth'" class="list__item"></div>
+      </div>
+
+      <Modal :is-opened="showModal" @close="showModal = false">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet nulla fuga impedit consectetur corporis at architecto animi eaque ad itaque numquam tenetur, deserunt quidem reiciendis! Assumenda fugit sequi error culpa!
+      </Modal>
     </vue-coe-scroll>
   </main>
 </template>
 
 <script>
 import { name } from '../package.json'
+import Modal from './components/Modal.vue'
 import VueCoeScroll from '../src/Index.vue'
 
 export default {
-  components: { VueCoeScroll },
+  components: { VueCoeScroll, Modal },
 
   data () {
     return {
       name,
+      showModal: false,
       content: Array.from(({ length: 4 }), (x, i) => i)
     }
   },
@@ -85,14 +115,13 @@ html, body {
 }
 
 .list {
-  & > .content {
-    background: linear-gradient(135deg, rgba(salmon, .8) 0%, rgba(cyan, .6) 100%);
-    padding: 8px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-column-gap: 8px;
-    grid-row-gap: 8px;
-  }
+  background: linear-gradient(135deg, rgba(salmon, .8) 0%, rgba(cyan, .6) 100%);
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+
   &__item {
     background: rgba(200, 0, 255, .5);
     &:after{

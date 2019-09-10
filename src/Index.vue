@@ -1,6 +1,6 @@
 <template>
   <div ref="wrapper" class="vue-coe-scroll" :style="styles">
-    <div class="scrollbar-wrapper" v-show="hasScroll && active">
+    <div v-show="hasScroll && active" class="scrollbar-wrapper">
       <div
         class="full-scrollbar"
         :style="{
@@ -323,6 +323,8 @@ export default {
   @include mobile { overflow: visible; }
 
   & > .scrollbar-wrapper {
+    @include mobile { display: none; }
+
     & > .full-scrollbar {
       top: 0;
       right: 0;
@@ -362,6 +364,7 @@ export default {
 
   & > .content {
     z-index: 1;
+    height: 100%;
 
     @include desktop {
       transform: translateY(var(--position-content));
