@@ -1,6 +1,6 @@
 {
   "name": "vue-coe-scrollbar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "cdn": "dist/vue-coe-scrollbar.js",
   "main": "dist/vue-coe-scrollbar.cjs.js",
@@ -11,7 +11,8 @@
   "scripts": {
     "test": "yarn build && NODE_ENV=test jest",
     "serve": "yarn build && poi --serve examples/main.js",
-    "build": "bili"
+    "build": "bili",
+    "postbuild": "poi examples/main.js -d docs"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
