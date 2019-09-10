@@ -431,10 +431,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "vue-coe-scroll",
-        {
-          attrs: { "emit-scroll": "", active: !_vm.showModal },
-          on: { "coe:scroll": _vm.scroll }
-        },
+        { attrs: { active: !_vm.showModal }, on: { scroll: _vm.scroll } },
         [
           _c(
             "div",
@@ -641,7 +638,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { ref: "content", staticClass: "content" },
+        _vm._g({ ref: "content", staticClass: "content" }, _vm.$listeners),
         [_vm._t("default")],
         2
       )
@@ -709,7 +706,7 @@ exports.push([module.i, ".c-overlay {\n  position: fixed;\n  z-index: 30;\n  lef
 
 exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(true);
 // Module
-exports.push([module.i, ".vue-coe-scroll {\n  height: 100%;\n  position: relative;\n  user-select: var(--user-select);\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper {\n      display: none;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .full-scrollbar {\n    top: 0;\n    right: 0;\n    bottom: 0;\n    z-index: 2;\n    position: absolute;\n    background: var(--scrollbar-background);\n    transition: opacity .3s;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n    right: var(--scrollbar-right);\n    z-index: 2;\n    position: absolute;\n    display: block;\n    border-radius: 50px;\n    border-color: transparent;\n    background: var(--scrollbar-color);\n    transition: opacity 0.5s;\n    transform: translateY(var(--position-scroll));\n    visibility: visible;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n        visibility: hidden;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:hover {\n      opacity: 1 !important;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:before {\n      content: \"\";\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: calc(var(--scrollbar-right) * - 1);\n      right: calc(var(--scrollbar-right) * - 1);\n}\n.vue-coe-scroll > .content {\n    z-index: 1;\n    overflow: hidden;\n    height: 100%;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .content {\n        overflow: auto;\n}\n}\n", "",{"version":3,"sources":["/Users/convenia/Code/vue-coe-scrollbar/src/Index.vue"],"names":[],"mappings":"AA4UA;EACE,YAAY;EACZ,kBAAkB;EAElB,+BAA+B;AAAA;AAV/B;AAMF;MAQsB,aAAa;AAAA;AAwChC;AAhDH;IAWM,MAAM;IACN,QAAQ;IACR,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,uCAAuC;IACvC,uBAAuB;AAAA;AAjB7B;IAqBM,6BAA6B;IAC7B,UAAU;IACV,kBAAkB;IAElB,cAAc;IAEd,mBAAmB;IACnB,yBAAyB;IACzB,kCAAkC;IAElC,wBAAwB;IACxB,6CAA6C;IAE7C,mBAAmB;AAAA;AAxCvB;AAMF;QAmCwB,kBAAkB;AAAA;AAYrC;AA/CL;MAqCe,qBAAqB;AAAA;AArCpC;MAwCQ,WAAW;MACX,kBAAkB;MAClB,MAAM;MACN,SAAS;MACT,wCAAwC;MACxC,yCAAyC;AAAA;AA7CjD;IAmDI,UAAU;IACV,gBAAgB;IAChB,YAAY;AAAA;AA3Dd;AAMF;QAuDsB,cAAc;AAAA;AACjC","file":"Index.vue?vue&type=style&index=0&lang=scss&","sourcesContent":["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n@mixin mobile {\n  @media only screen and (max-width: 575px) { @content; }\n}\n@mixin desktop {\n  @media only screen and (min-width: 575px) { @content; }\n}\n\n.vue-coe-scroll {\n  height: 100%;\n  position: relative;\n\n  user-select: var(--user-select);\n\n\n  & > .scrollbar-wrapper {\n    @include mobile { display: none; }\n\n    & > .full-scrollbar {\n      top: 0;\n      right: 0;\n      bottom: 0;\n      z-index: 2;\n      position: absolute;\n      background: var(--scrollbar-background);\n      transition: opacity .3s;\n    }\n\n    & > .scrollbar {\n      right: var(--scrollbar-right);\n      z-index: 2;\n      position: absolute;\n\n      display: block;\n\n      border-radius: 50px;\n      border-color: transparent;\n      background: var(--scrollbar-color);\n\n      transition: opacity 0.5s;\n      transform: translateY(var(--position-scroll));\n\n      visibility: visible;\n      @include mobile { visibility: hidden; }\n\n      &:hover{ opacity: 1 !important; }\n\n      &:before {\n        content: \"\";\n        position: absolute;\n        top: 0;\n        bottom: 0;\n        left: calc(var(--scrollbar-right) * - 1);\n        right: calc(var(--scrollbar-right) * - 1);\n      }\n    }\n  }\n\n  & > .content {\n    z-index: 1;\n    overflow: hidden;\n    height: 100%;\n\n    @include mobile { overflow: auto; }\n  }\n}\n"]}]);
+exports.push([module.i, ".vue-coe-scroll {\n  height: 100%;\n  position: relative;\n  user-select: var(--user-select);\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper {\n      display: none;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .full-scrollbar {\n    top: 0;\n    right: 0;\n    bottom: 0;\n    z-index: 2;\n    position: absolute;\n    background: var(--scrollbar-background);\n    transition: opacity .3s;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n    right: var(--scrollbar-right);\n    z-index: 2;\n    position: absolute;\n    display: block;\n    border-radius: 50px;\n    border-color: transparent;\n    background: var(--scrollbar-color);\n    transition: opacity 0.5s;\n    transform: translateY(var(--position-scroll));\n    visibility: visible;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n        visibility: hidden;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:hover {\n      opacity: 1 !important;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:before {\n      content: \"\";\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: calc(var(--scrollbar-right) * - 1);\n      right: calc(var(--scrollbar-right) * - 1);\n}\n.vue-coe-scroll > .content {\n    z-index: 1;\n    overflow: hidden;\n    height: 100%;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .content {\n        overflow: auto;\n}\n}\n", "",{"version":3,"sources":["/Users/convenia/Code/vue-coe-scrollbar/src/Index.vue"],"names":[],"mappings":"AAqUA;EACE,YAAY;EACZ,kBAAkB;EAElB,+BAA+B;AAAA;AAV/B;AAMF;MAQsB,aAAa;AAAA;AAwChC;AAhDH;IAWM,MAAM;IACN,QAAQ;IACR,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,uCAAuC;IACvC,uBAAuB;AAAA;AAjB7B;IAqBM,6BAA6B;IAC7B,UAAU;IACV,kBAAkB;IAElB,cAAc;IAEd,mBAAmB;IACnB,yBAAyB;IACzB,kCAAkC;IAElC,wBAAwB;IACxB,6CAA6C;IAE7C,mBAAmB;AAAA;AAxCvB;AAMF;QAmCwB,kBAAkB;AAAA;AAYrC;AA/CL;MAqCe,qBAAqB;AAAA;AArCpC;MAwCQ,WAAW;MACX,kBAAkB;MAClB,MAAM;MACN,SAAS;MACT,wCAAwC;MACxC,yCAAyC;AAAA;AA7CjD;IAmDI,UAAU;IACV,gBAAgB;IAChB,YAAY;AAAA;AA3Dd;AAMF;QAuDsB,cAAc;AAAA;AACjC","file":"Index.vue?vue&type=style&index=0&lang=scss&","sourcesContent":["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n@mixin mobile {\n  @media only screen and (max-width: 575px) { @content; }\n}\n@mixin desktop {\n  @media only screen and (min-width: 575px) { @content; }\n}\n\n.vue-coe-scroll {\n  height: 100%;\n  position: relative;\n\n  user-select: var(--user-select);\n\n\n  & > .scrollbar-wrapper {\n    @include mobile { display: none; }\n\n    & > .full-scrollbar {\n      top: 0;\n      right: 0;\n      bottom: 0;\n      z-index: 2;\n      position: absolute;\n      background: var(--scrollbar-background);\n      transition: opacity .3s;\n    }\n\n    & > .scrollbar {\n      right: var(--scrollbar-right);\n      z-index: 2;\n      position: absolute;\n\n      display: block;\n\n      border-radius: 50px;\n      border-color: transparent;\n      background: var(--scrollbar-color);\n\n      transition: opacity 0.5s;\n      transform: translateY(var(--position-scroll));\n\n      visibility: visible;\n      @include mobile { visibility: hidden; }\n\n      &:hover{ opacity: 1 !important; }\n\n      &:before {\n        content: \"\";\n        position: absolute;\n        top: 0;\n        bottom: 0;\n        left: calc(var(--scrollbar-right) * - 1);\n        right: calc(var(--scrollbar-right) * - 1);\n      }\n    }\n  }\n\n  & > .content {\n    z-index: 1;\n    overflow: hidden;\n    height: 100%;\n\n    @include mobile { overflow: auto; }\n  }\n}\n"]}]);
 
 
 
@@ -892,8 +889,7 @@ var _package_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpac
   },
 
   methods: {
-    scroll(e) {
-      console.log(e);
+    scroll(e) {// ... 
     }
 
   }
@@ -1184,11 +1180,6 @@ __webpack_require__.r(__webpack_exports__);
     background: {
       type: String,
       default: '#fefefe'
-    },
-    // Emit event on scroll
-    emitScroll: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -1295,7 +1286,6 @@ __webpack_require__.r(__webpack_exports__);
 
     onScroll(e) {
       if (!this.active || !this.hasScroll) return;
-      if (this.emitScroll) this.$emit('coe:scroll', e);
       this.show();
       this.scrollbarPosition += Math.ceil(e.deltaY * this.speed);
       this.hide();
