@@ -12,7 +12,7 @@
     "test": "yarn build && NODE_ENV=test jest",
     "serve": "yarn build && poi --serve examples/main.js",
     "build": "bili",
-    "postbuild": "poi examples/main.js -d docs --public-url ./"
+    "postbuild": "poi"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
