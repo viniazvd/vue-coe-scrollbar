@@ -4,6 +4,7 @@ const vue = require('rollup-plugin-vue')
 // const autoprefixer = require('autoprefixer')
 
 module.exports = {
+  dir: 'docs',
   js: 'buble',
   input: 'src/Index.vue',
   format: [ 'es', 'cjs', 'umd' ],
