@@ -77,7 +77,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "";
 /******/
 /******/
 /******/ 	// Load entry module and return exports
@@ -10845,7 +10845,7 @@ module.exports = g;
 /*! exports provided: name, version, license, cdn, main, unpkg, module, jsdelivr, umd:main, scripts, devDependencies, jest, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"vue-coe-scrollbar\",\"version\":\"0.1.1\",\"license\":\"MIT\",\"cdn\":\"dist/vue-coe-scrollbar.js\",\"main\":\"dist/vue-coe-scrollbar.cjs.js\",\"unpkg\":\"dist/vue-coe-scrollbar.js\",\"module\":\"dist/vue-coe-scrollbar.es.js\",\"jsdelivr\":\"dist/vue-coe-scrollbar.js\",\"umd:main\":\"dist/vue-coe-scrollbar.js\",\"scripts\":{\"test\":\"yarn build && NODE_ENV=test jest\",\"serve\":\"yarn build && poi --serve examples/main.js\",\"build\":\"bili\",\"postbuild\":\"poi examples/main.js -d docs\"},\"devDependencies\":{\"@babel/core\":\"^7.2.2\",\"@babel/preset-env\":\"^7.2.0\",\"@vue/test-utils\":\"^1.0.0-beta.27\",\"autoprefixer\":\"^9.4.3\",\"babel-core\":\"^7.0.0-bridge\",\"babel-jest\":\"^23.6.0\",\"bili\":\"^3.4.2\",\"jest\":\"^23.6.0\",\"node-sass\":\"^4.11.0\",\"poi\":\"^12.1.6\",\"rollup-plugin-vue\":\"^4.3.2\",\"sass-loader\":\"^7.1.0\",\"vue\":\"^2.5.21\",\"vue-jest\":\"^3.0.2\",\"vue-template-compiler\":\"^2.5.21\"},\"jest\":{\"moduleFileExtensions\":[\"js\",\"json\",\"vue\"],\"transform\":{\"^.+\\\\.js$\":\"<rootDir>/node_modules/babel-jest\",\".*\\\\.(vue)$\":\"<rootDir>/node_modules/vue-jest\"},\"moduleNameMapper\":{\"^@/(.*)$\":\"<rootDir>/src/$1\"}}}");
+module.exports = JSON.parse("{\"name\":\"vue-coe-scrollbar\",\"version\":\"0.1.2\",\"license\":\"MIT\",\"cdn\":\"dist/vue-coe-scrollbar.js\",\"main\":\"dist/vue-coe-scrollbar.cjs.js\",\"unpkg\":\"dist/vue-coe-scrollbar.js\",\"module\":\"dist/vue-coe-scrollbar.es.js\",\"jsdelivr\":\"dist/vue-coe-scrollbar.js\",\"umd:main\":\"dist/vue-coe-scrollbar.js\",\"scripts\":{\"test\":\"yarn build && NODE_ENV=test jest\",\"serve\":\"yarn build && poi --serve examples/main.js\",\"build\":\"bili\",\"postbuild\":\"poi examples/main.js -d docs --public-url ./\"},\"devDependencies\":{\"@babel/core\":\"^7.2.2\",\"@babel/preset-env\":\"^7.2.0\",\"@vue/test-utils\":\"^1.0.0-beta.27\",\"autoprefixer\":\"^9.4.3\",\"babel-core\":\"^7.0.0-bridge\",\"babel-jest\":\"^23.6.0\",\"bili\":\"^3.4.2\",\"jest\":\"^23.6.0\",\"node-sass\":\"^4.11.0\",\"poi\":\"^12.1.6\",\"rollup-plugin-vue\":\"^4.3.2\",\"sass-loader\":\"^7.1.0\",\"vue\":\"^2.5.21\",\"vue-jest\":\"^3.0.2\",\"vue-template-compiler\":\"^2.5.21\"},\"jest\":{\"moduleFileExtensions\":[\"js\",\"json\",\"vue\"],\"transform\":{\"^.+\\\\.js$\":\"<rootDir>/node_modules/babel-jest\",\".*\\\\.(vue)$\":\"<rootDir>/node_modules/vue-jest\"},\"moduleNameMapper\":{\"^@/(.*)$\":\"<rootDir>/src/$1\"}}}");
 
 /***/ }),
 
