@@ -4,16 +4,15 @@
       <span class="app__name">{{ name }}</span>
 
       <button class="app__button" @click="content.pop()">remove</button>
-      <button class="app__button" @click="content.push('kkk')">add</button>
+      <button class="app__button" @click="content.push(content.length + 1)">add</button>
       <button class="app__button" @click="showModal = !showModal">show modal</button>
     </div>
 
     <vue-coe-scroll emit-scroll @coe:scroll="scroll" :active="!showModal">
       <div class="list">
-        <div v-for="(x, i) in content" :key="i + '_first'" class="list__item"></div>
-        <div v-for="(x, i) in content" :key="i + '_second'" class="list__item"></div>
-        <div v-for="(x, i) in content" :key="i + '_third'" class="list__item"></div>
-        <div v-for="(x, i) in content" :key="i + '_fourth'" class="list__item"></div>
+        <div v-for="x in content" :key="x" class="list__item">
+          {{ x }}
+        </div>
       </div>
 
       <Modal :is-opened="showModal" @close="showModal = false">
@@ -59,7 +58,7 @@ export default {
     return {
       name,
       showModal: false,
-      content: Array.from(({ length: 4 }), (x, i) => i)
+      content: Array.from(({ length: 12 }), (x, i) => i)
     }
   },
 
