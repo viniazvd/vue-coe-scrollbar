@@ -117,7 +117,7 @@ export default {
 
       scrollbarRight: 4,        // scrollbar position right
       scrollbarWidth: 0,        // width / zoom
-      fullScrollbarWidth: 0,     // width / (8 / zoom)
+      fullScrollbarWidth: 0,    // width / (8 / zoom)
       scrollbarPosition: 0,
 
       userSelect: 'auto'        // Prevent selection on drag
@@ -129,6 +129,12 @@ export default {
       if (value <= 0) this.scrollbarPosition = 0
       if (value >= this.scrollTotal) this.scrollbarPosition = this.scrollTotal
 
+      /**
+      * Updates scrollTop instead translation.
+      * Transformations cause issues on fixed elements like modals.
+      *
+      * https://stackoverflow.com/questions/15194313/transform3d-not-working-with-position-fixed-children/15256339#15256339
+      */
       if (this.active) this.$refs.content.scrollTop = -this.contentPosition
     }
   },
