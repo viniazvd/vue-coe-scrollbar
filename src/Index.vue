@@ -1,29 +1,30 @@
 <template>
   <div ref="wrapper" class="vue-coe-scroll" :style="styles">
-    <div
-      class="full-scrollbar"
-      :style="{
-        opacity: +showScroll,
-        height: fullHeight + 'px',
-        width: scrollbarAppliedWidth + 8 + 'px'
-      }"
-      @mouseout="hide"
-      @mouseover="show"
-      @mousedown="onClick"
-    />
+    <div class="scrollbar-wrapper" v-show="hasScroll && active">
+      <div
+        class="full-scrollbar"
+        :style="{
+          opacity: +showScroll,
+          height: fullHeight + 'px',
+          width: scrollbarAppliedWidth + 8 + 'px'
+        }"
+        @mouseout="hide"
+        @mouseover="show"
+        @mousedown="onClick"
+      />
 
-    <div
-      ref="scrollbar"
-      v-show="hasScroll && active"
-      class="scrollbar"
-      :style="{
-        opacity: dragging ? 1 : +showScroll ? .5 : 0,
-        width: scrollbarAppliedWidth + 'px',
-        height: scrollbarHeight + 'px'
-      }"
-      @mouseout="hide"
-      @mouseover="show"
-    />
+      <div
+        ref="scrollbar"
+        class="scrollbar"
+        :style="{
+          opacity: +showScroll,
+          width: scrollbarAppliedWidth + 'px',
+          height: scrollbarHeight + 'px'
+        }"
+        @mouseout="hide"
+        @mouseover="show"
+      />
+    </div>
 
     <div ref="content" class="content">
       <slot />
@@ -83,7 +84,7 @@ export default {
 
     scrollbarColor: {
       type: String,
-      default: '#949494'
+      default: '#bbbbbb'
     },
 
     scrollbarBackground: {
@@ -171,10 +172,10 @@ export default {
 
   methods: {
     setHeights () {
-      const { wrapper } = this.$refs
+      const { wrapper, content } = this.$refs
 
       this.height = wrapper.clientHeight
-      this.fullHeight = wrapper.scrollHeight
+      this.fullHeight = content.clientHeight
     },
 
     update () {
@@ -321,39 +322,41 @@ export default {
   overflow: hidden;
   @include mobile { overflow: visible; }
 
-  & > .full-scrollbar {
-    top: 0;
-    right: 0;
-    z-index: 2;
-    position: absolute;
-    background: var(--scrollbar-background);
-    transition: opacity .3s;
-  }
-
-  & > .scrollbar {
-    right: 4px;
-    z-index: 2;
-    position: absolute;
-
-    display: block;
-
-    border-radius: 50px;
-    border-color: transparent;
-    background: var(--scrollbar-color);
-
-    transition: opacity 0.5s;
-    transform: translateY(var(--position-scroll));
-
-    visibility: visible;
-    @include mobile { visibility: hidden; }
-    &:hover{ opacity: 1 !important; }
-    &:before {
-      content: "";
-      position: absolute;
+  & > .scrollbar-wrapper {
+    & > .full-scrollbar {
       top: 0;
-      right: -4px;
-      left: -4px;
-      bottom: 0;
+      right: 0;
+      z-index: 2;
+      position: absolute;
+      background: var(--scrollbar-background);
+      transition: opacity .3s;
+    }
+
+    & > .scrollbar {
+      right: 4px;
+      z-index: 2;
+      position: absolute;
+
+      display: block;
+
+      border-radius: 50px;
+      border-color: transparent;
+      background: var(--scrollbar-color);
+
+      transition: opacity 0.5s;
+      transform: translateY(var(--position-scroll));
+
+      visibility: visible;
+      @include mobile { visibility: hidden; }
+      &:hover{ opacity: 1 !important; }
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -4px;
+        left: -4px;
+        bottom: 0;
+      }
     }
   }
 
