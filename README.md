@@ -12,7 +12,7 @@
 
 <br>
 
-**Competitive Diferentials**
+## Competitive Diferentials
 <ul style='margin: 0; padding: 0; color: red; list-style-type: none;'>
   <li>keyboard support</li>
     <li>bundle size: 2.2kB</li>
@@ -26,7 +26,7 @@
 
 <br>
 
-**Install**
+## Install
 `yarn add vue-coe-scrollbar` or `npm install vue-coe-scrollbar`
 
 **Example**
@@ -59,8 +59,6 @@ export default {
 }
 </script>
 ```
-
-<br>
 
 ## Props
 
