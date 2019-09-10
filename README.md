@@ -82,4 +82,5 @@ scroll     | Emit event on scroll
 - https://github.com/stephaniebang
 - https://github.com/guibarscevicius
 
-## Made in https://github.com/convenia
+## Made in 
+- https://github.com/convenia
