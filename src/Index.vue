@@ -28,7 +28,10 @@
     <div
       ref="content"
       class="content"
-      :style="{ height: active ? 'auto' : '100%' }"
+      :style="{
+        height: active ? 'auto' : '100%',
+        transform: active ? 'translateY(' + contentPosition + 'px)' : 'initial'
+      }"
     >
       <slot />
     </div>
@@ -146,7 +149,7 @@ export default {
       return {
         '--user-select': this.userSelect,
 
-        '--position-content': this.contentPosition + 'px',
+        // '--position-content': this.contentPosition + 'px',
         '--position-scroll': this.scrollbarPosition + 'px',
 
         '--scrollbar-color': this.color,
@@ -381,9 +384,7 @@ export default {
   & > .content {
     z-index: 1;
 
-    @include desktop {
-      transform: translateY(var(--position-content));
-    }
+    @include mobile { transform: initial; }
   }
 }
 </style>
