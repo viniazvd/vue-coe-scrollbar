@@ -15,6 +15,7 @@
 **Competitive Diferentials**
 <ul style='margin: 0; padding: 0; color: red; list-style-type: none;'>
   <li>keyboard support</li>
+  <li>built with poi and bili</li>
   <li>clean and documented code</li>
   <li>very light, bundle size: 2.2kB</li>
   <li>compatibility SSR -ty @vinicius73</li>
