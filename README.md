@@ -14,7 +14,10 @@
 
 **Competitive Diferentials**
 <ul style='margin: 0; padding: 0; color: red; list-style-type: none;'>
-  <li></li>
+  <li>compatibility SSR -ty @vinicius73</li>
+  <li>state-based, preventing re-paint -ty @vinicius73</li>
+  <li>based on transform, property calculated on GPU: ty, @VitorLuizC</li>
+  <li>use requestAnimationFrame to improve scrolling animation performance</li>
 </ul>
 
 <br>
@@ -25,7 +28,7 @@
 **Example**
 ```vue
 <template>
-  <vue-coe-scrollbar emit-scroll @scroll="scroll" :active="!showModal">
+  <vue-coe-scrollbar @scroll="scroll">
     <div class="list">
       <div v-for="x in content" :key="x" class="list__item">
         {{ x }}
@@ -73,3 +76,10 @@ background          |  String  |  `#fefefe` | scrollbar background
 Name       | About
 -----      | -----
 scroll     | Emit event on scroll
+
+## Contributors
+- https://github.com/Giseudo
+- https://github.com/stephaniebang
+- https://github.com/guibarscevicius
+
+## Made in https://github.com/convenia
