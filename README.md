@@ -60,13 +60,13 @@ export default {
 Name                |   type   | default    | About
 -----               | -------  | ---------- | ------
 active              |  Boolean |  `true`    | Disable scroll if false
-jump                |  Number  |  700       | Jump on click
-disappear           |  Number  |  1500      | The delay before scrollbar hides
-scrollDuration      |  Number  |  300       | The transition time on click/keydown (ms)
-speed               |  Number  |  0.1       | The scroll wheel speed ratio
-width               |  Number  |  10        | scrollbar width base
-color               |  String  |  '#bbbbbb' | scrollbar color
-background          |  String  |  '#fefefe' | scrollbar background
+jump                |  Number  |  `700`     | Jump on click
+disappear           |  Number  |  `1500`    | The delay before scrollbar hides
+scrollDuration      |  Number  |  `300`     | The transition time on click/keydown (ms)
+speed               |  Number  |  `0.1`     | The scroll wheel speed ratio
+width               |  Number  |  `10`      | scrollbar width base
+color               |  String  |  `#bbbbbb` | scrollbar color
+background          |  String  |  `#fefefe` | scrollbar background
 
 ## Events
 
