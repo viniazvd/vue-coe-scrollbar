@@ -182,6 +182,8 @@ export default {
       this.scrollbarAppliedWidth = this.scrollbarWidth / getZoom()
       this.hasScroll = this.fullHeight > this.height
 
+      if (this.scrollbarPosition > this.scrollTotal) this.scrollbarPosition = this.scrollTotal 
+
       this.hide()
     },
 
