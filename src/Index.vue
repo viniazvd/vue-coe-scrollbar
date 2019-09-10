@@ -25,7 +25,11 @@
       />
     </div>
 
-    <div ref="content" class="content">
+    <div
+      ref="content"
+      class="content"
+      :style="{ height: active ? 'auto' : '100%' }"
+    >
       <slot />
     </div>
   </div>
@@ -191,6 +195,8 @@ export default {
       this.scrollbarWidth = this.width / getZoom()
 
       this.fullScrollbarWidth = this.scrollbarWidth + (8 / getZoom())
+
+      if (this.scrollbarPosition > this.scrollTotal) this.scrollbarPosition = this.scrollTotal
 
       this.hide()
     },
@@ -374,7 +380,6 @@ export default {
 
   & > .content {
     z-index: 1;
-    height: 100%;
 
     @include desktop {
       transform: translateY(var(--position-content));
