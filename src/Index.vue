@@ -25,7 +25,7 @@
       />
     </div>
 
-    <div ref="content" class="content">
+    <div ref="content" class="content" v-on="$listeners">
       <slot />
     </div>
   </div>
@@ -90,12 +90,6 @@ export default {
     background: {
       type: String,
       default: '#fefefe'
-    },
-
-    // Emit event on scroll
-    emitScroll: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -206,7 +200,6 @@ export default {
 
     onScroll (e) {
       if (!this.active || !this.hasScroll) return
-      if (this.emitScroll) this.$emit('coe:scroll', e)
 
       this.show()
       this.scrollbarPosition += Math.ceil(e.deltaY * this.speed)

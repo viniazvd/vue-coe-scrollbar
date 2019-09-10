@@ -8,7 +8,7 @@
       <button class="app__button" @click="showModal = !showModal">show modal</button>
     </div>
 
-    <vue-coe-scroll emit-scroll @coe:scroll="scroll" :active="!showModal">
+    <vue-coe-scroll @scroll="scroll" :active="!showModal">
       <div class="list">
         <div v-for="x in content" :key="x" class="list__item">
           {{ x }}
@@ -64,7 +64,7 @@ export default {
 
   methods: {
     scroll (e) {
-      console.log(e)
+      // ... 
     }
   }
 }
