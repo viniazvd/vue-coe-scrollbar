@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="vue-coe-scroll" :style="styles">
+  <div class="vue-coe-scroll" :style="styles">
     <div v-show="hasScroll && active" class="scrollbar-wrapper">
       <div
         class="full-scrollbar"
@@ -25,7 +25,7 @@
       />
     </div>
 
-    <div ref="content" class="content" v-on="$listeners">
+    <div ref="wrapper" class="wrapper" v-on="$listeners">
       <slot />
     </div>
   </div>
@@ -129,14 +129,14 @@ export default {
       *
       * https://stackoverflow.com/questions/15194313/transform3d-not-working-with-position-fixed-children/15256339#15256339
       */
-      if (this.active) this.$refs.content.scrollTop = -this.contentPosition
+      if (this.active) this.$refs.wrapper.scrollTop = -this.contentPosition
     }
   },
 
   mounted () {
     this.bindEvents()
     this.update()
-    this.initMutationObserver(this.$refs.content)
+    this.initMutationObserver(this.$refs.wrapper)
   },
 
   computed: {
@@ -176,10 +176,8 @@ export default {
 
   methods: {
     setHeights () {
-      const { wrapper, content } = this.$refs
-
-      this.height = wrapper.clientHeight
-      this.fullHeight = content.scrollHeight
+      this.height = this.$el.clientHeight
+      this.fullHeight = this.$refs.wrapper.scrollHeight
     },
 
     update () {
@@ -249,7 +247,7 @@ export default {
     },
 
     onClick ({ clientY }) {
-      const { scrollbar, wrapper } = this.$refs
+      const { scrollbar } = this.$refs
       const { top, height } = scrollbar.getBoundingClientRect()
 
       const currentY = clientY - (height / 2)
@@ -373,10 +371,10 @@ export default {
     }
   }
 
-  & > .content {
+  & > .wrapper {
     z-index: 1;
-    overflow: hidden;
     height: 100%;
+    overflow: hidden;
 
     @include mobile { overflow: auto; }
   }
