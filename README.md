@@ -12,21 +12,20 @@
 
 <br>
 
-**Competitive Diferentials**
+## Competitive Diferentials
 <ul style='margin: 0; padding: 0; color: red; list-style-type: none;'>
   <li>keyboard support</li>
+  <li>bundle size: 2.2kB</li>
   <li>built with poi and bili</li>
+  <li>native style and behavior</li>
   <li>clean and documented code</li>
-  <li>very light, bundle size: 2.2kB</li>
   <li>compatibility SSR -ty @vinicius73</li>
   <li>state-based, preventing re-paint -ty @vinicius73</li>
   <li>based on transform, property calculated on GPU: ty, @VitorLuizC</li>
   <li>use requestAnimationFrame to improve scrolling animation performance</li>
 </ul>
 
-<br>
-
-**Install**
+## Install
 `yarn add vue-coe-scrollbar` or `npm install vue-coe-scrollbar`
 
 **Example**
@@ -60,8 +59,6 @@ export default {
 </script>
 ```
 
-<br>
-
 ## Props
 
 Name                |   type   | default    | About
@@ -75,7 +72,7 @@ width               |  Number  |  `10`      | scrollbar width base
 color               |  String  |  `#bbbbbb` | scrollbar color
 background          |  String  |  `#fefefe` | scrollbar background
 
-## Events
+## Event
 
 Name       | About
 -----      | -----
@@ -86,5 +83,4 @@ scroll     | Emit event on scroll
 - https://github.com/stephaniebang
 - https://github.com/guibarscevicius
 
-## Made in 
-- https://github.com/convenia
+**Made in:** @convenia
