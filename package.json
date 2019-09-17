@@ -1,6 +1,6 @@
 {
   "name": "vue-coe-scrollbar",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "license": "MIT",
   "cdn": "dist/vue-coe-scrollbar.js",
   "main": "dist/vue-coe-scrollbar.cjs.js",
