@@ -63,16 +63,16 @@ export default {
 
 Name                |   type   |             default          | About
 -----               | -------  | ---------------------------- | ------
-active              |  Boolean |  `true`                      | Disable scroll if false
+active              |  Boolean |            `true`            | Disable scroll if false
 wrapperSelector     |  String  |  `vue-coe-scroll > .wrapper` | all elements within that element's selector will recalculate the scroll
-initDelay           |  Number  |  `0`                         | delay to avoid wasted resources when mounting the scroll
-jump                |  Number  |  `700`                       | Jump on click
-disappear           |  Number  |  `1500`                      | The delay before scrollbar hides
-scrollDuration      |  Number  |  `300`                       | The transition time on click/keydown (ms)
-speed               |  Number  |  `0.1`                       | The scroll wheel speed ratio
-width               |  Number  |  `10`                        | scrollbar width base
-color               |  String  |  `#bbbbbb`                   | scrollbar color
-background          |  String  |  `#fefefe`                   | scrollbar background
+initDelay           |  Number  |            `0`               | delay to avoid wasted resources when mounting the scroll
+jump                |  Number  |            `700`             | Jump on click
+disappear           |  Number  |            `1500`            | The delay before scrollbar hides
+scrollDuration      |  Number  |            `300`             | The transition time on click/keydown (ms)
+speed               |  Number  |            `0.1`             | The scroll wheel speed ratio
+width               |  Number  |            `10`              | scrollbar width base
+color               |  String  |            `#bbbbbb`         | scrollbar color
+background          |  String  |            `#fefefe`         | scrollbar background
 
 **Disclaimer:** there is a bit more elaborate documentation in the code
 
