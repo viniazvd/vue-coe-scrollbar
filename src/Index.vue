@@ -51,6 +51,11 @@ export default {
       default: true
     },
 
+    wrapperSelector: {
+      type: String,
+      default: 'vue-coe-scroll > .wrapper'
+    },
+
     // Jump on click
     jump: {
       type: Number,
@@ -133,10 +138,17 @@ export default {
     }
   },
 
-  mounted () {
-    this.bindEvents()
-    this.update()
-    this.initMutationObserver(this.$refs.wrapper)
+  created () {
+    const el = document.querySelector(this.wrapperSelector)
+
+    this.$once('hook:mounted', () => {
+      this.bindEvents()
+      setTimeout(() => this.initMutationObserver(el), 500)
+    })
+
+    this.$once('hook:beforeDestroy', () => {
+      setTimeout(() => this.mutation.disconnect(), 500)
+    })
   },
 
   computed: {
@@ -293,8 +305,6 @@ export default {
 
     unbindEvents () {
       this.$eventsBinded.forEach(unbind => unbind())
-
-      this.mutation.disconnect()
     },
 
     initMutationObserver (el) {
