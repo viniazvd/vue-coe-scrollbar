@@ -51,9 +51,19 @@ export default {
       default: true
     },
 
+    // default is scroll element container
+    // but you might want to see some side-effects on your page to update the scroll
     wrapperSelector: {
       type: String,
       default: 'vue-coe-scroll > .wrapper'
+    },
+
+    // MutationObserver API triggers 'update' method for each DOM change
+    // to prevent this behavior, it is recommended that you set this delay
+    // and avoid unnecessary resources
+    initDelay: {
+      type: Number,
+      default: 0
     },
 
     // Jump on click
@@ -139,15 +149,14 @@ export default {
   },
 
   created () {
-    const el = document.querySelector(this.wrapperSelector)
-
     this.$once('hook:mounted', () => {
       this.bindEvents()
-      setTimeout(() => this.initMutationObserver(el), 500)
+      setTimeout(this.initMutationObserver, this.initDelay)
     })
 
     this.$once('hook:beforeDestroy', () => {
-      setTimeout(() => this.mutation.disconnect(), 500)
+      this.unbindEvents()
+      setTimeout(() => this.mutation.disconnect(), this.initDelay)
     })
   },
 
@@ -311,14 +320,11 @@ export default {
       const callback = mutations => mutations.forEach(this.update)
       this.mutation = new MutationObserver(callback)
 
+      const el = document.querySelector(this.wrapperSelector)
       const config = { childList: true, subtree: true, characterData: true }
 
       this.mutation.observe(el, config)
     }
-  },
-
-  beforeDestroy () {
-    this.unbindEvents()
   }
 }
 </script>
