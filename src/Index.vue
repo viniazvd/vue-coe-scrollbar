@@ -99,12 +99,12 @@ export default {
 
     color: {
       type: String,
-      default: '#bbbbbb'
+      default: 'rgba(18, 30, 73, 0.2)'
     },
 
     background: {
       type: String,
-      default: '#fefefe'
+      default: 'transparent'
     }
   },
 
