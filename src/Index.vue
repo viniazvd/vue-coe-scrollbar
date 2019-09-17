@@ -150,6 +150,7 @@ export default {
 
   created () {
     this.$once('hook:mounted', () => {
+      this.update()
       this.bindEvents()
       setTimeout(this.initMutationObserver, this.initDelay)
     })
@@ -202,6 +203,7 @@ export default {
     },
 
     update () {
+      console.log('update')
       this.show()
       this.setHeights()
 
@@ -317,10 +319,17 @@ export default {
     },
 
     initMutationObserver () {
+      const el = document.querySelector(this.wrapperSelector)
+
+      // defensive code!
+      // motive:
+      // - this method is only executed inside 'setTimeout',
+      // so when vue compiles the script, it doesn't find the element and returns an undefined
+      if (!el) return
+
       const callback = mutations => mutations.forEach(this.update)
       this.mutation = new MutationObserver(callback)
 
-      const el = document.querySelector(this.wrapperSelector)
       const config = { childList: true, subtree: true, characterData: true }
 
       this.mutation.observe(el, config)
