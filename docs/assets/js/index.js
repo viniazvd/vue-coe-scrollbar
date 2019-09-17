@@ -431,7 +431,10 @@ var render = function() {
       _vm._v(" "),
       _c(
         "vue-coe-scroll",
-        { attrs: { active: !_vm.showModal }, on: { scroll: _vm.scroll } },
+        {
+          attrs: { active: !_vm.showModal, color: "black" },
+          on: { scroll: _vm.scroll }
+        },
         [
           _c(
             "div",
@@ -702,7 +705,7 @@ exports.push([module.i, ".c-overlay {\n  position: fixed;\n  z-index: 30;\n  lef
 
 exports = module.exports = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js")(true);
 // Module
-exports.push([module.i, ".vue-coe-scroll {\n  height: 100%;\n  position: relative;\n  user-select: var(--user-select);\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper {\n      display: none;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .full-scrollbar {\n    top: 0;\n    right: 0;\n    bottom: 0;\n    z-index: 2;\n    position: absolute;\n    background: var(--scrollbar-background);\n    transition: opacity .3s;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n    right: var(--scrollbar-right);\n    z-index: 2;\n    position: absolute;\n    display: block;\n    border-radius: 50px;\n    border-color: transparent;\n    background: var(--scrollbar-color);\n    transition: opacity 0.5s;\n    transform: translateY(var(--position-scroll));\n    visibility: visible;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n        visibility: hidden;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:hover {\n      opacity: 1 !important;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:before {\n      content: \"\";\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: calc(var(--scrollbar-right) * - 1);\n      right: calc(var(--scrollbar-right) * - 1);\n}\n.vue-coe-scroll > .wrapper {\n    z-index: 1;\n    height: 100%;\n    overflow: hidden;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .wrapper {\n        overflow: auto;\n}\n}\n", "",{"version":3,"sources":["/Users/convenia/Desktop/convenia-spa/vue-coe-scrollbar/src/Index.vue"],"names":[],"mappings":"AAmVA;EACE,YAAY;EACZ,kBAAkB;EAElB,+BAA+B;AAAA;AAV/B;AAMF;MAQsB,aAAa;AAAA;AAwChC;AAhDH;IAWM,MAAM;IACN,QAAQ;IACR,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,uCAAuC;IACvC,uBAAuB;AAAA;AAjB7B;IAqBM,6BAA6B;IAC7B,UAAU;IACV,kBAAkB;IAElB,cAAc;IAEd,mBAAmB;IACnB,yBAAyB;IACzB,kCAAkC;IAElC,wBAAwB;IACxB,6CAA6C;IAE7C,mBAAmB;AAAA;AAxCvB;AAMF;QAmCwB,kBAAkB;AAAA;AAYrC;AA/CL;MAqCe,qBAAqB;AAAA;AArCpC;MAwCQ,WAAW;MACX,kBAAkB;MAClB,MAAM;MACN,SAAS;MACT,wCAAwC;MACxC,yCAAyC;AAAA;AA7CjD;IAmDI,UAAU;IACV,YAAY;IACZ,gBAAgB;AAAA;AA3DlB;AAMF;QAuDsB,cAAc;AAAA;AACjC","file":"Index.vue?vue&type=style&index=0&lang=scss&","sourcesContent":["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n@mixin mobile {\n  @media only screen and (max-width: 575px) { @content; }\n}\n@mixin desktop {\n  @media only screen and (min-width: 575px) { @content; }\n}\n\n.vue-coe-scroll {\n  height: 100%;\n  position: relative;\n\n  user-select: var(--user-select);\n\n\n  & > .scrollbar-wrapper {\n    @include mobile { display: none; }\n\n    & > .full-scrollbar {\n      top: 0;\n      right: 0;\n      bottom: 0;\n      z-index: 2;\n      position: absolute;\n      background: var(--scrollbar-background);\n      transition: opacity .3s;\n    }\n\n    & > .scrollbar {\n      right: var(--scrollbar-right);\n      z-index: 2;\n      position: absolute;\n\n      display: block;\n\n      border-radius: 50px;\n      border-color: transparent;\n      background: var(--scrollbar-color);\n\n      transition: opacity 0.5s;\n      transform: translateY(var(--position-scroll));\n\n      visibility: visible;\n      @include mobile { visibility: hidden; }\n\n      &:hover{ opacity: 1 !important; }\n\n      &:before {\n        content: \"\";\n        position: absolute;\n        top: 0;\n        bottom: 0;\n        left: calc(var(--scrollbar-right) * - 1);\n        right: calc(var(--scrollbar-right) * - 1);\n      }\n    }\n  }\n\n  & > .wrapper {\n    z-index: 1;\n    height: 100%;\n    overflow: hidden;\n\n    @include mobile { overflow: auto; }\n  }\n}\n"]}]);
+exports.push([module.i, ".vue-coe-scroll {\n  height: 100%;\n  position: relative;\n  user-select: var(--user-select);\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper {\n      display: none;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .full-scrollbar {\n    top: 0;\n    right: 0;\n    bottom: 0;\n    z-index: 2;\n    position: absolute;\n    background: var(--scrollbar-background);\n    transition: opacity .3s;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n    right: var(--scrollbar-right);\n    z-index: 2;\n    position: absolute;\n    display: block;\n    border-radius: 50px;\n    border-color: transparent;\n    background: var(--scrollbar-color);\n    transition: opacity 0.5s;\n    transform: translateY(var(--position-scroll));\n    visibility: visible;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar {\n        visibility: hidden;\n}\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:hover {\n      opacity: 1 !important;\n}\n.vue-coe-scroll > .scrollbar-wrapper > .scrollbar:before {\n      content: \"\";\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: calc(var(--scrollbar-right) * - 1);\n      right: calc(var(--scrollbar-right) * - 1);\n}\n.vue-coe-scroll > .wrapper {\n    z-index: 1;\n    height: 100%;\n    overflow: hidden;\n}\n@media only screen and (max-width: 575px) {\n.vue-coe-scroll > .wrapper {\n        overflow: auto;\n}\n}\n", "",{"version":3,"sources":["/Users/convenia/Desktop/convenia-spa/vue-coe-scrollbar/src/Index.vue"],"names":[],"mappings":"AA4VA;EACE,YAAY;EACZ,kBAAkB;EAElB,+BAA+B;AAAA;AAV/B;AAMF;MAQsB,aAAa;AAAA;AAwChC;AAhDH;IAWM,MAAM;IACN,QAAQ;IACR,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,uCAAuC;IACvC,uBAAuB;AAAA;AAjB7B;IAqBM,6BAA6B;IAC7B,UAAU;IACV,kBAAkB;IAElB,cAAc;IAEd,mBAAmB;IACnB,yBAAyB;IACzB,kCAAkC;IAElC,wBAAwB;IACxB,6CAA6C;IAE7C,mBAAmB;AAAA;AAxCvB;AAMF;QAmCwB,kBAAkB;AAAA;AAYrC;AA/CL;MAqCe,qBAAqB;AAAA;AArCpC;MAwCQ,WAAW;MACX,kBAAkB;MAClB,MAAM;MACN,SAAS;MACT,wCAAwC;MACxC,yCAAyC;AAAA;AA7CjD;IAmDI,UAAU;IACV,YAAY;IACZ,gBAAgB;AAAA;AA3DlB;AAMF;QAuDsB,cAAc;AAAA;AACjC","file":"Index.vue?vue&type=style&index=0&lang=scss&","sourcesContent":["\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n@mixin mobile {\n  @media only screen and (max-width: 575px) { @content; }\n}\n@mixin desktop {\n  @media only screen and (min-width: 575px) { @content; }\n}\n\n.vue-coe-scroll {\n  height: 100%;\n  position: relative;\n\n  user-select: var(--user-select);\n\n\n  & > .scrollbar-wrapper {\n    @include mobile { display: none; }\n\n    & > .full-scrollbar {\n      top: 0;\n      right: 0;\n      bottom: 0;\n      z-index: 2;\n      position: absolute;\n      background: var(--scrollbar-background);\n      transition: opacity .3s;\n    }\n\n    & > .scrollbar {\n      right: var(--scrollbar-right);\n      z-index: 2;\n      position: absolute;\n\n      display: block;\n\n      border-radius: 50px;\n      border-color: transparent;\n      background: var(--scrollbar-color);\n\n      transition: opacity 0.5s;\n      transform: translateY(var(--position-scroll));\n\n      visibility: visible;\n      @include mobile { visibility: hidden; }\n\n      &:hover{ opacity: 1 !important; }\n\n      &:before {\n        content: \"\";\n        position: absolute;\n        top: 0;\n        bottom: 0;\n        left: calc(var(--scrollbar-right) * - 1);\n        right: calc(var(--scrollbar-right) * - 1);\n      }\n    }\n  }\n\n  & > .wrapper {\n    z-index: 1;\n    height: 100%;\n    overflow: hidden;\n\n    @include mobile { overflow: auto; }\n  }\n}\n"]}]);
 
 
 
@@ -885,7 +888,7 @@ var _package_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpac
   },
 
   methods: {
-    scroll(e) {// ... 
+    scroll(e) {// ...
     }
 
   }
@@ -1237,6 +1240,7 @@ __webpack_require__.r(__webpack_exports__);
 
   created() {
     this.$once('hook:mounted', () => {
+      this.update();
       this.bindEvents();
       setTimeout(this.initMutationObserver, this.initDelay);
     });
@@ -1284,6 +1288,7 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     update() {
+      console.log('update');
       this.show();
       this.setHeights();
       this.hasScroll = this.fullHeight > this.height;
@@ -1401,10 +1406,16 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     initMutationObserver() {
+      const el = document.querySelector(this.wrapperSelector); // defensive code!
+      // motive:
+      // - this method is only executed inside 'setTimeout',
+      // so when vue compiles the script, it doesn't find the element and returns an undefined
+
+      if (!el) return;
+
       const callback = mutations => mutations.forEach(this.update);
 
       this.mutation = new MutationObserver(callback);
-      const el = document.querySelector(this.wrapperSelector);
       const config = {
         childList: true,
         subtree: true,
@@ -10839,7 +10850,7 @@ module.exports = g;
 /*! exports provided: name, version, license, cdn, main, unpkg, module, jsdelivr, umd:main, scripts, devDependencies, jest, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"vue-coe-scrollbar\",\"version\":\"0.1.5\",\"license\":\"MIT\",\"cdn\":\"dist/vue-coe-scrollbar.js\",\"main\":\"dist/vue-coe-scrollbar.cjs.js\",\"unpkg\":\"dist/vue-coe-scrollbar.js\",\"module\":\"dist/vue-coe-scrollbar.es.js\",\"jsdelivr\":\"dist/vue-coe-scrollbar.js\",\"umd:main\":\"dist/vue-coe-scrollbar.js\",\"scripts\":{\"test\":\"yarn build && NODE_ENV=test jest\",\"serve\":\"yarn build && poi --serve examples/main.js\",\"build\":\"bili\",\"postbuild\":\"poi\"},\"devDependencies\":{\"@babel/core\":\"^7.2.2\",\"@babel/preset-env\":\"^7.2.0\",\"@vue/test-utils\":\"^1.0.0-beta.27\",\"autoprefixer\":\"^9.4.3\",\"babel-core\":\"^7.0.0-bridge\",\"babel-jest\":\"^23.6.0\",\"bili\":\"^3.4.2\",\"jest\":\"^23.6.0\",\"node-sass\":\"^4.11.0\",\"poi\":\"^12.1.6\",\"rollup-plugin-vue\":\"^4.3.2\",\"sass-loader\":\"^7.1.0\",\"vue\":\"^2.5.21\",\"vue-jest\":\"^3.0.2\",\"vue-template-compiler\":\"^2.5.21\"},\"jest\":{\"moduleFileExtensions\":[\"js\",\"json\",\"vue\"],\"transform\":{\"^.+\\\\.js$\":\"<rootDir>/node_modules/babel-jest\",\".*\\\\.(vue)$\":\"<rootDir>/node_modules/vue-jest\"},\"moduleNameMapper\":{\"^@/(.*)$\":\"<rootDir>/src/$1\"}}}");
+module.exports = JSON.parse("{\"name\":\"vue-coe-scrollbar\",\"version\":\"0.1.6\",\"license\":\"MIT\",\"cdn\":\"dist/vue-coe-scrollbar.js\",\"main\":\"dist/vue-coe-scrollbar.cjs.js\",\"unpkg\":\"dist/vue-coe-scrollbar.js\",\"module\":\"dist/vue-coe-scrollbar.es.js\",\"jsdelivr\":\"dist/vue-coe-scrollbar.js\",\"umd:main\":\"dist/vue-coe-scrollbar.js\",\"scripts\":{\"test\":\"yarn build && NODE_ENV=test jest\",\"serve\":\"yarn build && poi --serve examples/main.js\",\"build\":\"bili\",\"postbuild\":\"poi\"},\"devDependencies\":{\"@babel/core\":\"^7.2.2\",\"@babel/preset-env\":\"^7.2.0\",\"@vue/test-utils\":\"^1.0.0-beta.27\",\"autoprefixer\":\"^9.4.3\",\"babel-core\":\"^7.0.0-bridge\",\"babel-jest\":\"^23.6.0\",\"bili\":\"^3.4.2\",\"jest\":\"^23.6.0\",\"node-sass\":\"^4.11.0\",\"poi\":\"^12.1.6\",\"rollup-plugin-vue\":\"^4.3.2\",\"sass-loader\":\"^7.1.0\",\"vue\":\"^2.5.21\",\"vue-jest\":\"^3.0.2\",\"vue-template-compiler\":\"^2.5.21\"},\"jest\":{\"moduleFileExtensions\":[\"js\",\"json\",\"vue\"],\"transform\":{\"^.+\\\\.js$\":\"<rootDir>/node_modules/babel-jest\",\".*\\\\.(vue)$\":\"<rootDir>/node_modules/vue-jest\"},\"moduleNameMapper\":{\"^@/(.*)$\":\"<rootDir>/src/$1\"}}}");
 
 /***/ }),
 
