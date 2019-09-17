@@ -316,7 +316,7 @@ export default {
       this.$eventsBinded.forEach(unbind => unbind())
     },
 
-    initMutationObserver (el) {
+    initMutationObserver () {
       const callback = mutations => mutations.forEach(this.update)
       this.mutation = new MutationObserver(callback)
 
