@@ -64,7 +64,7 @@ export default {
 Name                |   type   |             default          | About
 -----               | -------  | ---------------------------- | ------
 active              |  Boolean |            `true`            | Disable scroll if false
-wrapperSelector     |  String  |  `vue-coe-scroll > .wrapper` | all elements within that element's selector will recalculate the scroll
+wrapperSelector     |  String  |  `vue-coe-scroll > .wrapper` | all elements inside that element will recalculate the scroll
 initDelay           |  Number  |            `0`               | delay to avoid wasted resources when mounting the scroll
 jump                |  Number  |            `700`             | Jump on click
 disappear           |  Number  |            `1500`            | The delay before scrollbar hides
