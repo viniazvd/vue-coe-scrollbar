@@ -94,7 +94,7 @@ export default {
     // scrollbar width base
     width: {
       type: Number,
-      default: 10
+      default: 7
     },
 
     color: {
