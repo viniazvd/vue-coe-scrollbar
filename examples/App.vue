@@ -78,8 +78,8 @@ html, body {
   border: 0;
   padding: 0;
   height: 100%;
-  font-family: Arial;
   overflow: hidden;
+  font-family: Arial;
 
   @media only screen and (max-width: 575px) { overflow: visible; }
 }
@@ -91,9 +91,9 @@ html, body {
 
   &__header {
     display: flex;
-    align-items: center;
     padding: 20px;
-    box-shadow: 0 4px 16px rgba(black, .5);
+    align-items: center;
+    // box-shadow: 0 4px 16px rgba(black, .5);
   }
   &__name {
     flex: 1;
@@ -102,27 +102,30 @@ html, body {
   }
   &__button {
     border: 0;
-    background: black;
     color: white;
-    border-radius: 8px;
-    font-size: 16px;
-    padding: 8px 16px;
-    margin: 0 4px;
-    cursor: pointer;
     outline: none;
+    margin: 0 4px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 16px;
+    background: black;
+    border-radius: 8px;
   }
 }
 
 .list {
-  background: linear-gradient(135deg, rgba(salmon, .8) 0%, rgba(cyan, .6) 100%);
-  padding: 8px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 8px;
   grid-row-gap: 8px;
+  grid-column-gap: 8px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  padding: 8px;
+  margin-right: 20px;
+  background: linear-gradient(135deg, rgba(salmon, .8) 0%, rgba(cyan, .6) 100%);
 
   &__item {
     background: rgba(200, 0, 255, .5);
+
     &:after{
       content: '';
       display: block;
