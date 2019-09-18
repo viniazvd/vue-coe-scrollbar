@@ -210,10 +210,10 @@ export default {
 
       this.hasScroll = this.fullHeight > this.height
 
-      this.scrollbarRight = 4 / getZoom()
+      this.scrollbarRight = 3 / getZoom()
       this.scrollbarWidth = this.width / getZoom()
 
-      this.fullScrollbarWidth = this.scrollbarWidth + (8 / getZoom())
+      this.fullScrollbarWidth = this.scrollbarWidth + (6 / getZoom())
 
       if (this.scrollbarPosition > this.scrollTotal) this.scrollbarPosition = this.scrollTotal
 
