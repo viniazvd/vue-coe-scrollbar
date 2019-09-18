@@ -8,7 +8,7 @@
       <button class="app__button" @click="showModal = !showModal">show modal</button>
     </div>
 
-    <vue-coe-scroll @scroll="scroll" :active="!showModal" color="black">
+    <vue-coe-scroll :active="!showModal" @scroll="scroll">
       <div class="list">
         <div v-for="x in content" :key="x" class="list__item">
           {{ x }}
