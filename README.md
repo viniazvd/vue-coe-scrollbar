@@ -70,9 +70,9 @@ jump                |  Number  |            `700`             | Jump on click
 disappear           |  Number  |            `1500`            | The delay before scrollbar hides
 scrollDuration      |  Number  |            `300`             | The transition time on click/keydown (ms)
 speed               |  Number  |            `0.1`             | The scroll wheel speed ratio
-width               |  Number  |            `10`              | scrollbar width base
+width               |  Number  |            `7`               | scrollbar width base
 color               |  String  |     `rgba(18, 30, 73, 0.2)`  | scrollbar color
-background          |  String  |            transparent`      | scrollbar background
+background          |  String  |          `transparent`       | scrollbar background
 
 **Disclaimer:** there is a bit more elaborate documentation in the code
 
