@@ -55,7 +55,7 @@ export default {
     // but you might want to see some side-effects on your page to update the scroll
     wrapperSelector: {
       type: String,
-      default: 'vue-coe-scroll > .wrapper'
+      default: '.vue-coe-scroll > .wrapper'
     },
 
     // MutationObserver API triggers 'update' method for each DOM change
@@ -110,7 +110,7 @@ export default {
 
   data () {
     return {
-      mutation: null,
+      mutation: {},
 
       dragging: false,
 
@@ -203,7 +203,8 @@ export default {
     },
 
     update () {
-      console.log('update')
+      if (!this.$el || !this.$refs.wrapper) return
+
       this.show()
       this.setHeights()
 
@@ -320,18 +321,10 @@ export default {
 
     initMutationObserver () {
       const el = document.querySelector(this.wrapperSelector)
-
-      // defensive code!
-      // motive:
-      // - this method is only executed inside 'setTimeout',
-      // so when vue compiles the script, it doesn't find the element and returns an undefined
-      if (!el) return
-
       const callback = mutations => mutations.forEach(this.update)
-      this.mutation = new MutationObserver(callback)
-
       const config = { childList: true, subtree: true, characterData: true }
 
+      this.mutation = new MutationObserver(callback)
       this.mutation.observe(el, config)
     }
   }
